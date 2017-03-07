@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -61,12 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivMessageViewIcon = (ImageView) findViewById(R.id.activity_main_ivMessageViewIcon);
         tvMessageViewTitle = (TextView) findViewById(R.id.activity_main_tvMessageViewTitle);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerView);
+        Button btnRetry = (Button) findViewById(R.id.activity_main_btnMessageViewRetry);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, COLUMNS));
         recyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.space_between_areas)));
         productsRecyclerView = new ProductsRecyclerView(MainActivity.this, products);
         recyclerView.setAdapter(productsRecyclerView);
+        btnRetry.setOnClickListener(this);
 
         setSupportActionBar(toolbar);
         showProducts();
