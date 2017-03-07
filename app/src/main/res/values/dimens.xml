@@ -1,0 +1,15 @@
+<resources>
+    <dimen name="screen_edge">16dp</dimen>
+    <dimen name="message_edge">50dp</dimen>
+    <dimen name="space_between_areas">8dp</dimen>
+    <dimen name="list_item">72dp</dimen>
+    <dimen name="toolbar_image_height">35dp</dimen>
+    <dimen name="progressBar_square_size">40dp</dimen>
+    <dimen name="product_square_size">120dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+
+    <dimen name="font_size_title">12sp</dimen>
+    <dimen name="font_size_toolbar_title">22sp</dimen>
+    <dimen name="font_size_price">20sp</dimen>
+    <dimen name="font_size_text">12sp</dimen>
+</resources>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Solidus</string>
+    <string name="product_description">Product description</string>
+    <string name="product_image_description">Product description</string>
+    <string name="message_view_image_description">Message view image</string>
+    <string name="app_image_title_description">@string/app_name</string>
+    <string name="retry">Retry</string>
+    <string name="generic_text_content">This is a generic content</string>
+    <string name="generic_text_content_extended">Et culpa aliquid officiis modi alias porro quod et. Perspiciatis consequatur omnis ipsum asperiores. Voluptatibus maxime cupiditate non id fugiat velit cumque. Corrupti praesentium libero ad dolorum voluptatem excepturi et earum.</string>
+    <string name="generic_product_title">Ruby on Rails Baseball Jersey</string>
+    <string name="generic_product_price">$19.99</string>
+    <string name="no_internet_connection_title">No Internet connection</string>
+    <string name="no_content_title">No products available</string>
+    <string name="error_connection_title">Something went wrong</string>
+    <string name="title_activity_product_details">Product Details</string>
+    <string name="properties">PROPERTIES</string>
+    <string name="variants">VARIANTS</string>
+    <string name="price">PRICE</string>
+    <string name="similar_items">LOOK FOR SIMILAR ITEMS</string>
+
+</resources>

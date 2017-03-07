@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.herokuapp.soliduxample.solidus.views.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/activity_main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/toolbar_image_height"
+                    android:src="@drawable/solidus_logo"
+                    android:contentDescription="@string/app_image_title_description"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_main_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/activity_main_pbMainProgressBar"
+            android:layout_width="@dimen/progressBar_square_size"
+            android:layout_height="@dimen/progressBar_square_size"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:id="@+id/activity_main_llMessageView"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/message_edge"
+            android:layout_marginLeft="@dimen/message_edge"
+            android:layout_marginRight="@dimen/message_edge"
+            android:layout_marginStart="@dimen/message_edge"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/activity_main_ivMessageViewIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/app_name"
+                android:background="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/activity_main_tvMessageViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/textColor"
+                android:layout_marginTop="@dimen/space_between_areas"
+                android:text="@string/generic_text_content"
+                android:textAlignment="center" />
+
+            <android.support.v7.widget.AppCompatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/activity_main_btnMessageViewRetry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_areas"
+                android:text="@string/retry"
+                android:textColor="@color/colorWhite"
+                app:backgroundTint="@color/colorAccent"
+                app:textAllCaps="false" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
