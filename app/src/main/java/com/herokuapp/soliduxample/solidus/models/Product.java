@@ -1,8 +1,5 @@
 package com.herokuapp.soliduxample.solidus.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,9 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by office on 3/6/17.
+ * Created by Roberto Morelos on 3/6/17.
+ *
  */
-
 public class Product implements Serializable {
 
     @SerializedName("id")

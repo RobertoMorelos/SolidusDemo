@@ -37,17 +37,25 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/activity_main_recyclerView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/activity_main_swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
-        <ProgressBar
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_main_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--<ProgressBar
             android:id="@+id/activity_main_pbMainProgressBar"
             android:layout_width="@dimen/progressBar_square_size"
             android:layout_height="@dimen/progressBar_square_size"
             android:visibility="gone"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"/>-->
 
         <LinearLayout
             android:id="@+id/activity_main_llMessageView"
@@ -81,7 +89,7 @@
                 android:text="@string/generic_text_content"
                 android:textAlignment="center" />
 
-            <android.support.v7.widget.AppCompatButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            <!--<android.support.v7.widget.AppCompatButton xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main_btnMessageViewRetry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +97,7 @@
                 android:text="@string/retry"
                 android:textColor="@color/colorWhite"
                 app:backgroundTint="@color/colorAccent"
-                app:textAllCaps="false" />
+                app:textAllCaps="false" />-->
 
         </LinearLayout>
 

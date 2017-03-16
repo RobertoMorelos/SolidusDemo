@@ -35,7 +35,7 @@ import java.util.List;
  * This activity displays the detailed information of one product.
  */
 public class ProductDetails extends AppCompatActivity {
-    //private static final String TAG = ProductDetails.class.getSimpleName();
+    private static final String TAG = ProductDetails.class.getSimpleName();
     private ImageView ivProduct;
     private LinearLayout llProperties;
     private TableLayout tlTableProperties;
@@ -50,10 +50,16 @@ public class ProductDetails extends AppCompatActivity {
 
     private Product product;
 
+    /**
+     * Method inherited from AppCompatActivity.
+     * Initialize all the components here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //We set link the view with the activity
         setContentView(R.layout.activity_product_details);
+        //find all the views we will use and assign them to objects
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ivProduct = (ImageView) findViewById(R.id.activity_product_details_ivProduct);
         llProperties = (LinearLayout) findViewById(R.id.activity_product_details_llProperties);
@@ -67,19 +73,29 @@ public class ProductDetails extends AppCompatActivity {
         llMainSimilar = (LinearLayout) findViewById(R.id.activity_product_details_llMainSimilar);
         progressBar = (ProgressBar) findViewById(R.id.activity_product_details_pbProgressBar);
 
+        //obtain the object passed from the previous Activity
         product = (Product) getIntent().getSerializableExtra(Constants.PRODUCT);
 
+        //set the toolbar as action bar
         setSupportActionBar(toolbar);
+        //if action bar is not null set it with the back arrow
         if (null != getSupportActionBar()){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        //load the content in the views
         loadContent();
     }
 
+    /**
+     * Set the information in the views.
+     */
     public void loadContent(){
-        List<Image> images = product.getMaster().getImages();
+        //show the progress in the image view
         showProgress();
+        //get the images from the product object
+        List<Image> images = product.getMaster().getImages();
+        //if there are images then load the first one into the image view using Picasso
         if (images.size() > 0){
             String imageURL = Config.MAIN_URL + images.get(0).getProductUrl();
             Picasso.with(this).load(imageURL).fit().error(R.drawable.product_not_available).into(ivProduct, new Callback() {
@@ -94,7 +110,8 @@ public class ProductDetails extends AppCompatActivity {
                 }
             });
         }else{
-            Picasso.with(this).load(R.drawable.product_not_available).fit().error(R.drawable.product_not_available).into(ivProduct, new Callback() {
+            //there are not images available, so show a default one
+            Picasso.with(this).load(R.drawable.product_not_available).fit().into(ivProduct, new Callback() {
                 @Override
                 public void onSuccess() {
                     hideProgress();
@@ -107,10 +124,14 @@ public class ProductDetails extends AppCompatActivity {
             });
         }
 
+        //set the product name
         tvName.setText(product.getName());
+        //set the product price
         tvPrice.setText(product.getDisplayPrice());
 
+        //obtain the product description
         String description = product.getDescription();
+        //if the description is not null then make visible the view and display it in there, otherwise hide the view
         if (null != description){
             tvDescription.setVisibility(View.VISIBLE);
             tvDescription.setText(description);
@@ -118,6 +139,7 @@ public class ProductDetails extends AppCompatActivity {
             tvDescription.setVisibility(View.GONE);
         }
 
+        //if the product has variants then make the view visible and add radio buttons for each variant, otherwise hide the view
         if (product.getHasVariants()){
             llVariants.setVisibility(View.VISIBLE);
 
@@ -134,7 +156,9 @@ public class ProductDetails extends AppCompatActivity {
             llVariants.setVisibility(View.GONE);
         }
 
+        //get a list of properties
         List<ProductProperty> productProperties = product.getProductProperties();
+        //if the product has properties then make the view visible and add rows to the view for each property, otherwise hide the view
         if (productProperties.size()>0){
             llProperties.setVisibility(View.VISIBLE);
             for (ProductProperty productProperty: productProperties) {
@@ -147,10 +171,11 @@ public class ProductDetails extends AppCompatActivity {
             llProperties.setVisibility(View.GONE);
         }
 
+        //get a list of classifications
         List<Classification> classifications = product.getClassifications();
+        //if the product has classifications then make the view visible and add text views to the view for each classification, otherwise hide the view
         if (classifications.size()>0){
             llMainSimilar.setVisibility(View.VISIBLE);
-
             for (Classification classification: classifications) {
                 TextView newTextView = new TextView(this);
                 newTextView.setText(classification.getTaxon().getName());
@@ -160,12 +185,15 @@ public class ProductDetails extends AppCompatActivity {
                         RadioGroup.LayoutParams.WRAP_CONTENT);
                 llSimilar.addView(newTextView, 0, layoutParams);
             }
-
         }else{
             llMainSimilar.setVisibility(View.GONE);
         }
     }
 
+    /**
+     * Method inherited from AppCompatActivity.
+     * If user presses the back arrow, then return to previous Activity.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -177,10 +205,16 @@ public class ProductDetails extends AppCompatActivity {
         }
     }
 
+    /**
+     * Show the progress bar in the picture
+     */
     public void showProgress(){
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Hide the progress bar in the picture
+     */
     public void hideProgress(){
         progressBar.setVisibility(View.GONE);
     }

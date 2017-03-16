@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by office on 3/6/17.
+ * Created by Roberto Morelos on 3/6/17.
  *
  */
 public class Variant implements Serializable {

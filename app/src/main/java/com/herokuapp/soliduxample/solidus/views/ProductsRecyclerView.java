@@ -25,24 +25,34 @@ import java.util.List;
  * This is the adapter for displaying the products in the Recycler View.
  */
 class ProductsRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    //private static final String TAG = ProductsRecyclerView.class.getSimpleName();
+    private static final String TAG = ProductsRecyclerView.class.getSimpleName();
 
     private List<Product> products;
     private Context context;
 
     /**
-     * Public constructor
+     * Public constructor.
+     * @param context needed to use certain features.
+     * @param  products the list of all products to display.
      */
     ProductsRecyclerView(Context context, List<Product> products) {
         this.products = products;
         this.context = context;
     }
 
+    /**
+     * Method inherited from RecyclerView.Adapter.
+     * Return a custom view holder made with the private class ProductViewHolder.
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new ProductViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.product_view, viewGroup, false));
     }
 
+    /**
+     * Method inherited from RecyclerView.Adapter.
+     * The view is being bound so fill it with the object data in the current position.
+     */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ProductViewHolder productViewHolder = (ProductViewHolder) holder;
@@ -90,16 +100,25 @@ class ProductsRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
+    /**
+     * Method inherited from RecyclerView.Adapter.
+     */
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
 
+    /**
+     * Method inherited from RecyclerView.Adapter.
+     */
     @Override
     public int getItemCount() {
         return products.size();
     }
 
+    /**
+     * Private class to use as View holder.
+     */
     private class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProduct;
         TextView tvTitle;
