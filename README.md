@@ -1,6 +1,6 @@
 # Solidus Demo
 
-This demo shows how to use the API provided by Solidus using Heroku.
+This demo shows how to use the API provided by Solidus.
 ### What does it do?
 
 * Fetches information from the API using Retrofit.
