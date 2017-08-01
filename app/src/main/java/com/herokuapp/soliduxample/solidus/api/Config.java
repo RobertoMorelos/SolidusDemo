@@ -24,38 +24,12 @@
 
 package com.herokuapp.soliduxample.solidus.api;
 
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 /**
  * Created by Roberto Morelos on 3/5/17.
- * Uses the Retrofit service, including some features like logs for debugging
- * and increasing the timeout.
+ * This class contains the main configuration info for the app.
  */
-public class ServiceGenerator {
-
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-                    .baseUrl(Config.MAIN_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
-
-    private static Retrofit retrofit = builder.build();
-
-    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS);
-
-    public static <S> S createService(
-            Class<S> serviceClass) {
-        if (!httpClient.interceptors().contains(logging)) {
-            httpClient.addInterceptor(logging);
-            builder.client(httpClient.build());
-            retrofit = builder.build();
-        }
-        return retrofit.create(serviceClass);
-    }
+public class Config {
+    public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
+    public static final String TOKEN = "ddcd14bbe6699211f8e157ca9b6812d9c699617c9a72caf7";
+    public static final String PRODUCTS_URL = "/api/products.json";
 }

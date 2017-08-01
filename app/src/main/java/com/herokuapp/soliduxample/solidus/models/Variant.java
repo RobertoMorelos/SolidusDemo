@@ -1,3 +1,27 @@
+/*
+* MIT License
+*
+* Copyright (c) 2017 Roberto Morelos
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/
+
 package com.herokuapp.soliduxample.solidus.models;
 
 import com.google.gson.annotations.Expose;
@@ -11,7 +35,6 @@ import java.util.List;
  *
  */
 public class Variant implements Serializable {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -56,7 +79,7 @@ public class Variant implements Serializable {
     private List<OptionValue> optionValues = null;
     @SerializedName("images")
     @Expose
-    private List<Image_> images = null;
+    private List<Image> images = null;
     @SerializedName("display_price")
     @Expose
     private String displayPrice;
@@ -188,11 +211,11 @@ public class Variant implements Serializable {
         this.optionValues = optionValues;
     }
 
-    public List<Image_> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image_> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
@@ -243,5 +266,4 @@ public class Variant implements Serializable {
     public void setIsDestroyed(Boolean isDestroyed) {
         this.isDestroyed = isDestroyed;
     }
-
 }
