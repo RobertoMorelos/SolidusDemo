@@ -1,14 +1,13 @@
 # Solidus Demo
 
-This demo shows how to use the API provided by Solidus using Heroku.
-### What does it have?
+This demo shows how to use the API provided by Solidus.
+### What does it do?
 
-* Fetches the information from the API using Retrofit.
-* Displays the images efficiently using Picasso.
-* Use of material design and Android guidelines.
+* Fetches information from the API using Retrofit.
+* Displays images efficiently using Picasso.
+* Uses material design and Android guidelines.
 
-
-### Todos
+### TODOs
 
  - Store data in local until new one arrives
  - Paginate the API and then the app.
