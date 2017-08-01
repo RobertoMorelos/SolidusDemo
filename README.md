@@ -9,11 +9,9 @@ This demo shows how to use the API provided by Solidus.
 
 ### TODOs
 
- - Store data in local until new one arrives
  - Paginate the API and then the app.
  - Use a software design pattern like MVP.
 
 License
 ----
-
-Open source software license
+Licensed under the MIT License.
