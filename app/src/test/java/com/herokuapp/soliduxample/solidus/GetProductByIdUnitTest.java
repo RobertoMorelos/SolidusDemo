@@ -70,7 +70,7 @@ public class GetProductByIdUnitTest{
                 getProductByIdUnitTest.error = error;
             }
         });
-        productDetailsInteractor.getProducts(Constants.TOKEN, TEST_PRODUCT_ID);
+        productDetailsInteractor.getProduct(Constants.TOKEN, TEST_PRODUCT_ID);
         latch.await();
 
         Assert.assertNotNull(getProductByIdUnitTest.product);
@@ -94,7 +94,7 @@ public class GetProductByIdUnitTest{
                 getProductByIdUnitTest.error = error;
             }
         });
-        productDetailsInteractor.getProducts(TEST_WRONG_TOKEN, TEST_PRODUCT_ID);
+        productDetailsInteractor.getProduct(TEST_WRONG_TOKEN, TEST_PRODUCT_ID);
         latch.await();
 
         Assert.assertNull(getProductByIdUnitTest.product);

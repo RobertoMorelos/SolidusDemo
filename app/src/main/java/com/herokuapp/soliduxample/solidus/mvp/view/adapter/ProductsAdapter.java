@@ -114,7 +114,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View view) {
                 if (onItemClickListener != null){
-                    onItemClickListener.onItemClick(product);
+                    onItemClickListener.onItemClick(product.getId());
                 }
             }
         });
@@ -170,7 +170,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * Interface for handling clicks in certain item.
      */
     public interface OnItemClickListener {
-        void onItemClick(Product product);
+        void onItemClick(int productId);
     }
 
     /**

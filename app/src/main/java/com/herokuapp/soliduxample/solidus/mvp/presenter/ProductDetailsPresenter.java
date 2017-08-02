@@ -25,6 +25,7 @@
 package com.herokuapp.soliduxample.solidus.mvp.presenter;
 
 import com.herokuapp.soliduxample.solidus.app.Constants;
+import com.herokuapp.soliduxample.solidus.mvp.interactor.ProductDetailsInteractor;
 import com.herokuapp.soliduxample.solidus.mvp.interactor.ProductsInteractor;
 import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
@@ -35,19 +36,15 @@ import java.util.List;
 /**
  * @author Roberto Morelos.
  * @since 8/1/17.
- * Presenter for obtaining all products from certain user.
+ * Presenter for obtaining all product details from certain user.
  */
-public class ProductDetailsPresenter implements ProductsInteractor.InteractorListener{
-    private ProductsInteractor interactor;
+public class ProductDetailsPresenter implements ProductDetailsInteractor.InteractorListener{
+    private ProductDetailsInteractor interactor;
     private View viewListener;
-    private boolean isLoading;
-    private int maxPages = 1;
-    private int currentPage = 1;
     private String token;
-    private boolean isLoadingMore;
 
     public ProductDetailsPresenter(View viewListener, String token){
-        this.interactor = new ProductsInteractor();
+        this.interactor = new ProductDetailsInteractor();
         this.viewListener = viewListener;
         this.token = token;
     }
@@ -69,26 +66,18 @@ public class ProductDetailsPresenter implements ProductsInteractor.InteractorLis
     /**
      * Fetches orders and sets them in the adapter.
      */
-    public void getProducts(boolean reset){
-        isLoadingMore = !reset;
-        if (reset) currentPage = 1;
-        if (currentPage <= maxPages && !isLoading){
-            viewListener.showProgress(true);
-            isLoading = true;
-            interactor.getProducts(token, Constants.PER_PAGE, currentPage);
-        }
+    public void getProduct(int id){
+        viewListener.showProgress(true);
+        interactor.getProduct(token, id);
     }
 
     /**
      * Method inherited from ProductsInteractor.InteractorListener.
      */
     @Override
-    public void onSuccess(Products products) {
-        isLoading = false;
-        currentPage += 1;
-        maxPages = products.getPages();
+    public void onSuccess(Product product) {
         viewListener.showProgress(false);
-        viewListener.addProducts(products.getProducts(), isLoadingMore);
+        viewListener.onProductFetched(product);
     }
 
     /**
@@ -96,7 +85,6 @@ public class ProductDetailsPresenter implements ProductsInteractor.InteractorLis
      */
     @Override
     public void onFail(Error error) {
-        isLoading = false;
         viewListener.showProgress(false);
         viewListener.onError(error);
     }
@@ -107,7 +95,7 @@ public class ProductDetailsPresenter implements ProductsInteractor.InteractorLis
      * Interface for notifying the activity/view.
      */
     public interface View {
-        void addProducts(List<Product> products, boolean isLoadingMore);
+        void onProductFetched(Product product);
         void showProgress(boolean state);
         void onError(Error error);
     }

@@ -152,9 +152,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Method inherited from ProductsAdapter.OnItemClickListener.
      */
     @Override
-    public void onItemClick(Product product) {
+    public void onItemClick(int productId) {
         Intent registerIntent = new Intent(this, ProductDetailsActivity.class);
-        registerIntent.putExtra(Constants.PRODUCT, product);
+        registerIntent.putExtra(Constants.PRODUCT_ID, productId);
         startActivity(registerIntent);
     }
 

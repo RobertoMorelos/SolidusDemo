@@ -36,12 +36,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
+import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Master;
+import com.herokuapp.soliduxample.solidus.mvp.presenter.ProductDetailsPresenter;
 import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.mvp.model.Classification;
@@ -57,8 +60,7 @@ import java.util.List;
  * Created by Roberto Morelos on 3/6/17.
  * This activity displays the detailed information of one product.
  */
-public class ProductDetailsActivity extends AppCompatActivity {
-    //private static final String TAG = ProductDetailsActivity.class.getSimpleName();
+public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsPresenter.View {
     private ImageView ivProduct;
     private LinearLayout llProperties;
     private TableLayout tlTableProperties;
@@ -69,9 +71,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView tvPrice;
     private LinearLayout llSimilar;
     private LinearLayout llMainSimilar;
+    private ProgressBar progressBarImage;
     private ProgressBar progressBar;
+    private LinearLayout linearWrapper;
 
-    private Product product;
+    private ProductDetailsPresenter presenter;
 
     /**
      * Method inherited from AppCompatActivity.
@@ -94,10 +98,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvPrice = (TextView) findViewById(R.id.activity_product_details_tvPrice);
         llSimilar = (LinearLayout) findViewById(R.id.activity_product_details_llSimilar);
         llMainSimilar = (LinearLayout) findViewById(R.id.activity_product_details_llMainSimilar);
-        progressBar = (ProgressBar) findViewById(R.id.activity_product_details_pbProgressBar);
-
-        //obtain the object passed from the previous Activity
-        product = (Product) getIntent().getSerializableExtra(Constants.PRODUCT);
+        progressBarImage = (ProgressBar) findViewById(R.id.activity_product_details_pbProgressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progress_main_progress_bar);
+        linearWrapper = (LinearLayout) findViewById(R.id.linear_wrapper);
 
         //set the toolbar as action bar
         setSupportActionBar(toolbar);
@@ -106,8 +109,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //load the content in the views
-        loadContent();
+        //obtain the id passed from the previous Activity
+        int productId = getIntent().getIntExtra(Constants.PRODUCT_ID, 0);
+
+        presenter = new ProductDetailsPresenter(this, Constants.TOKEN);
+        presenter.start();
+        presenter.getProduct(productId);
     }
 
     /**
@@ -120,9 +127,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     /**
+     * Method inherited from AppCompatActivity.
+     */
+    @Override
+    protected void onStop() {
+        presenter.stop();
+        super.onStop();
+    }
+
+    @Override
+    public void onProductFetched(Product product) {
+        loadContent(product);
+    }
+
+    @Override
+    public void showProgress(boolean state) {
+        progressBar.setVisibility(state ? View.VISIBLE : View.GONE);
+        linearWrapper.setVisibility(state ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onError(Error error) {
+
+    }
+
+    /**
      * Set the information in the views.
      */
-    public void loadContent(){
+    public void loadContent(Product product){
         //show the progress in the image view
         showProgress();
         //get the images from the product object
@@ -222,17 +254,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Show the progress bar in the picture
+     * Shows/hides the progress bar in the picture.
      */
     public void showProgress(){
-        progressBar.setVisibility(View.VISIBLE);
+        progressBarImage.setVisibility(View.VISIBLE);
     }
 
     /**
      * Hide the progress bar in the picture
      */
     public void hideProgress(){
-        progressBar.setVisibility(View.GONE);
+        progressBarImage.setVisibility(View.GONE);
     }
-
 }

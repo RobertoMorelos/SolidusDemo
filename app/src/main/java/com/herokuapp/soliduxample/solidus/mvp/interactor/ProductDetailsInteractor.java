@@ -49,7 +49,7 @@ public class ProductDetailsInteractor {
      * @param token: user token.
      * @param idProduct: id to fetch details.
      */
-    public void getProducts(String token, int idProduct){
+    public void getProduct(String token, int idProduct){
         call = RestService.createService(RestAPI.class).getProductDetails(token, idProduct);
         call.enqueue(new Callback<Product>() {
             @Override
