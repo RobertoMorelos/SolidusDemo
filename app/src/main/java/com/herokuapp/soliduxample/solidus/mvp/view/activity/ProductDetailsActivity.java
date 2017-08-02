@@ -30,7 +30,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,13 +41,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.api.Config;
+import com.herokuapp.soliduxample.solidus.mvp.model.Master;
+import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.mvp.model.Classification;
 import com.herokuapp.soliduxample.solidus.mvp.model.Image;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.herokuapp.soliduxample.solidus.mvp.model.ProductProperty;
-import com.herokuapp.soliduxample.solidus.mvp.model.Variant;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +58,7 @@ import java.util.List;
  * This activity displays the detailed information of one product.
  */
 public class ProductDetailsActivity extends AppCompatActivity {
-    private static final String TAG = ProductDetailsActivity.class.getSimpleName();
+    //private static final String TAG = ProductDetailsActivity.class.getSimpleName();
     private ImageView ivProduct;
     private LinearLayout llProperties;
     private TableLayout tlTableProperties;
@@ -112,6 +111,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     /**
+     * Method inherited from AppCompatActivity.
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    /**
      * Set the information in the views.
      */
     public void loadContent(){
@@ -121,7 +129,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         List<Image> images = product.getMaster().getImages();
         //if there are images then load the first one into the image view using Picasso
         if (images.size() > 0){
-            String imageURL = Config.MAIN_URL + images.get(0).getProductUrl();
+            String imageURL = ApiConfiguration.MAIN_URL + images.get(0).getProductUrl();
             Picasso.with(this).load(imageURL).fit().error(R.drawable.product_not_available).into(ivProduct, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -166,8 +174,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         //if the product has variants then make the view visible and add radio buttons for each variant, otherwise hide the view
         if (product.getHasVariants()){
             llVariants.setVisibility(View.VISIBLE);
-
-            for (Variant variant: product.getVariants()) {
+            for (Master variant: product.getVariants()) {
                 RadioButton newRadioButton = new RadioButton(this);
                 newRadioButton.setText(variant.getName());
                 newRadioButton.setId(variant.getId());
@@ -211,21 +218,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         }else{
             llMainSimilar.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Method inherited from AppCompatActivity.
-     * If user presses the back arrow, then return to previous Activity.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 

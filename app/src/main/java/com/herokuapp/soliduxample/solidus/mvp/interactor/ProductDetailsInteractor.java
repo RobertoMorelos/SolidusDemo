@@ -24,10 +24,10 @@
 
 package com.herokuapp.soliduxample.solidus.mvp.interactor;
 
+import com.herokuapp.soliduxample.solidus.mvp.model.Error;
+import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.herokuapp.soliduxample.solidus.rest.RestAPI;
 import com.herokuapp.soliduxample.solidus.rest.RestService;
-import com.herokuapp.soliduxample.solidus.mvp.model.Error;
-import com.herokuapp.soliduxample.solidus.mvp.model.Products;
 
 import java.io.IOException;
 
@@ -38,22 +38,22 @@ import retrofit2.Response;
 /**
  * @author Roberto Morelos
  * @since 8/1/17
- * Handles the information request and notifies the ProductsPresenter.
+ * Handles the information request and notifies the ProductDetailsPresenter.
  */
-public class ProductsInteractor {
+public class ProductDetailsInteractor {
     private InteractorListener interactorListener;
-    private Call<Products> call;
+    private Call<Product> call;
 
     /**
      * Gets all products from certain user.
      * @param token: user token.
-     * @param page: current page to fetch.
+     * @param idProduct: id to fetch details.
      */
-    public void getProducts(String token, int perPage, int page){
-        call = RestService.createService(RestAPI.class).getAllProducts(token, perPage, page);
-        call.enqueue(new Callback<Products>() {
+    public void getProducts(String token, int idProduct){
+        call = RestService.createService(RestAPI.class).getProductDetails(token, idProduct);
+        call.enqueue(new Callback<Product>() {
             @Override
-            public void onResponse(Call<Products> call, Response<Products> response) {
+            public void onResponse(Call<Product> call, Response<Product> response) {
                 if (response.isSuccessful()){
                     interactorListener.onSuccess(response.body());
                 }else{
@@ -67,7 +67,7 @@ public class ProductsInteractor {
             }
 
             @Override
-            public void onFailure(Call<Products> call, Throwable t) {
+            public void onFailure(Call<Product> call, Throwable t) {
                 interactorListener.onFail(new Error(t.getMessage()));
             }
         });
@@ -92,7 +92,7 @@ public class ProductsInteractor {
      * Listener for interacting with the Presenter.
      */
     public interface InteractorListener{
-        void onSuccess(Products products);
+        void onSuccess(Product products);
         void onFail(Error error);
     }
 }

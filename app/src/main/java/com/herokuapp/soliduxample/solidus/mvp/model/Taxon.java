@@ -35,7 +35,6 @@ import java.util.List;
  *
  */
 public class Taxon implements Serializable {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -54,6 +53,12 @@ public class Taxon implements Serializable {
     @SerializedName("taxonomy_id")
     @Expose
     private Integer taxonomyId;
+    @SerializedName("meta_title")
+    @Expose
+    private String metaTitle;
+    @SerializedName("meta_description")
+    @Expose
+    private String metaDescription;
     @SerializedName("taxons")
     @Expose
     private List<Object> taxons = null;
@@ -106,6 +111,22 @@ public class Taxon implements Serializable {
         this.taxonomyId = taxonomyId;
     }
 
+    public String getMetaTitle() {
+        return metaTitle;
+    }
+
+    public void setMetaTitle(String metaTitle) {
+        this.metaTitle = metaTitle;
+    }
+
+    public String getMetaDescription() {
+        return metaDescription;
+    }
+
+    public void setMetaDescription(String metaDescription) {
+        this.metaDescription = metaDescription;
+    }
+
     public List<Object> getTaxons() {
         return taxons;
     }
@@ -113,5 +134,4 @@ public class Taxon implements Serializable {
     public void setTaxons(List<Object> taxons) {
         this.taxons = taxons;
     }
-
 }

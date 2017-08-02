@@ -37,7 +37,7 @@ import java.util.List;
  * @since 8/1/17.
  * Presenter for obtaining all products from certain user.
  */
-public class ProductsPresenter implements ProductsInteractor.InteractorListener{
+public class ProductDetailsPresenter implements ProductsInteractor.InteractorListener{
     private ProductsInteractor interactor;
     private View viewListener;
     private boolean isLoading;
@@ -46,7 +46,7 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     private String token;
     private boolean isLoadingMore;
 
-    public ProductsPresenter(View viewListener, String token){
+    public ProductDetailsPresenter(View viewListener, String token){
         this.interactor = new ProductsInteractor();
         this.viewListener = viewListener;
         this.token = token;

@@ -39,7 +39,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.api.Config;
 import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.helper.SpacesItemDecoration;
 import com.herokuapp.soliduxample.solidus.helper.Utility;
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //assign the the listeners
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        presenter = new ProductsPresenter(this, Config.TOKEN);
+        presenter = new ProductsPresenter(this, Constants.TOKEN);
         presenter.start();
         //start the presenter
         if (Utility.isNetworkAvailable(this)) {
@@ -164,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * It allows to fetch the products from the API and then display them in the recycler view.
      */
     @Override
-    public void addProducts(List<Product> products, boolean isReset) {
-        if (isReset) productsAdapter.clear();
+    public void addProducts(List<Product> products, boolean isLoadingMore) {
+        if (!isLoadingMore) productsAdapter.clear();
         if (products.size() > 0){
             productsAdapter.add(products);
         }else{

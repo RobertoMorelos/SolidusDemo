@@ -35,7 +35,6 @@ import java.util.List;
  *
  */
 public class Master implements Serializable {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -50,7 +49,7 @@ public class Master implements Serializable {
     private String price;
     @SerializedName("weight")
     @Expose
-    private String weight;
+    private Object weight;
     @SerializedName("height")
     @Expose
     private Object height;
@@ -74,7 +73,7 @@ public class Master implements Serializable {
     private Boolean trackInventory;
     @SerializedName("cost_price")
     @Expose
-    private String costPrice;
+    private Object costPrice;
     @SerializedName("option_values")
     @Expose
     private List<OptionValue> optionValues = null;
@@ -93,13 +92,15 @@ public class Master implements Serializable {
     @SerializedName("is_backorderable")
     @Expose
     private Boolean isBackorderable;
+    @SerializedName("is_orderable")
+    @Expose
+    private Boolean isOrderable;
     @SerializedName("total_on_hand")
     @Expose
     private Integer totalOnHand;
     @SerializedName("is_destroyed")
     @Expose
     private Boolean isDestroyed;
-    private final static long serialVersionUID = -2126874130352666359L;
 
     public Integer getId() {
         return id;
@@ -133,11 +134,11 @@ public class Master implements Serializable {
         this.price = price;
     }
 
-    public String getWeight() {
+    public Object getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(Object weight) {
         this.weight = weight;
     }
 
@@ -197,11 +198,11 @@ public class Master implements Serializable {
         this.trackInventory = trackInventory;
     }
 
-    public String getCostPrice() {
+    public Object getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(String costPrice) {
+    public void setCostPrice(Object costPrice) {
         this.costPrice = costPrice;
     }
 
@@ -253,6 +254,14 @@ public class Master implements Serializable {
         this.isBackorderable = isBackorderable;
     }
 
+    public Boolean getIsOrderable() {
+        return isOrderable;
+    }
+
+    public void setIsOrderable(Boolean isOrderable) {
+        this.isOrderable = isOrderable;
+    }
+
     public Integer getTotalOnHand() {
         return totalOnHand;
     }
@@ -268,6 +277,4 @@ public class Master implements Serializable {
     public void setIsDestroyed(Boolean isDestroyed) {
         this.isDestroyed = isDestroyed;
     }
-
-
 }

@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.api;
+package com.herokuapp.soliduxample.solidus.rest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,11 +36,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Uses the Retrofit service, including some features like logs for debugging
  * and increasing the timeout.
  */
-public class ServiceGenerator {
+public class RestService {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(Config.MAIN_URL)
+                    .baseUrl(ApiConfiguration.MAIN_URL)
                     .addConverterFactory(GsonConverterFactory.create());
 
     private static Retrofit retrofit = builder.build();

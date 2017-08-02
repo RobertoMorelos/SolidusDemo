@@ -34,7 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.api.Config;
+import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.herokuapp.soliduxample.solidus.mvp.model.Image;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.squareup.picasso.Callback;
@@ -82,7 +82,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         List<Image> images = product.getMaster().getImages();
         productViewHolder.showProgress();
         if (images.size() > 0){
-            String imageURL = Config.MAIN_URL + images.get(0).getProductUrl();
+            String imageURL = ApiConfiguration.MAIN_URL + images.get(0).getProductUrl();
             Picasso.with(context).load(imageURL).fit().error(R.drawable.product_not_available).into(productViewHolder.ivProduct, new Callback() {
                 @Override
                 public void onSuccess() {

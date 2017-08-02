@@ -22,21 +22,29 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.api;
+package com.herokuapp.soliduxample.solidus.rest;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Roberto Morelos on 3/5/17.
  * This class contains the main configuration info for the app.
  */
-public class Config {
-    public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
-    public static final String TOKEN = "ddcd14bbe6699211f8e157ca9b6812d9c699617c9a72caf7";
+public class ApiConfiguration {
+    //Time out
+    static final int TIME_OUT = 15;
+    static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
 
-    //API end points
-    static final String PRODUCTS_URL = "/api/products.json";
+    //Base URL
+    public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
 
     //API parameters
     static final String PRODUCT_PARAMETER_PER_PAGE = "per_page";
     static final String PRODUCT_PARAMETER_PAGE     = "page";
-    static final String PRODUCT_PARAMETER_TOKEN    = "token";
+    static final String PRODUCT_PARAMETER_ID       = "id";
+    static final String PRODUCT_PARAMETER_TOKEN    = "X-Spree-Token";
+
+    //API end points
+    static final String URL_PRODUCTS = "/api/products";
+    static final String URL_PRODUCT_DETAILS = "/api/products/{" + PRODUCT_PARAMETER_ID +"}";
 }

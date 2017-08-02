@@ -22,12 +22,15 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.api;
+package com.herokuapp.soliduxample.solidus.rest;
 
+import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.herokuapp.soliduxample.solidus.mvp.model.Products;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -35,19 +38,31 @@ import retrofit2.http.Query;
  * @since 3/5/17.
  * Controls the HTTP requests to the API.
  */
-public interface APIClient {
+public interface RestAPI {
 
     /**
      * Obtain all the products per page.
      *
-     * @param token needed for the API.
-     * @param perPage How many items per page.
-     * @param page  The page which will get the information.
+     * @param token: Needed for the API.
+     * @param perPage: How many items per page.
+     * @param page: The page which will get the information.
      */
-    @GET(Config.PRODUCTS_URL)
+    @GET(ApiConfiguration.URL_PRODUCTS)
     Call<Products> getAllProducts(
-            @Query(Config.PRODUCT_PARAMETER_TOKEN) String token,
-            @Query(Config.PRODUCT_PARAMETER_PER_PAGE) int perPage,
-            @Query(Config.PRODUCT_PARAMETER_PAGE) int page
+            @Header(ApiConfiguration.PRODUCT_PARAMETER_TOKEN) String token,
+            @Query(ApiConfiguration.PRODUCT_PARAMETER_PER_PAGE) int perPage,
+            @Query(ApiConfiguration.PRODUCT_PARAMETER_PAGE) int page
+    );
+
+    /**
+     * Obtain product details by id.
+     *
+     * @param token: Needed for the API.
+     * @param productId: Id for request.
+     */
+    @GET(ApiConfiguration.URL_PRODUCT_DETAILS)
+    Call<Product> getProductDetails(
+            @Header(ApiConfiguration.PRODUCT_PARAMETER_TOKEN) String token,
+            @Path(ApiConfiguration.PRODUCT_PARAMETER_ID) int productId
     );
 }

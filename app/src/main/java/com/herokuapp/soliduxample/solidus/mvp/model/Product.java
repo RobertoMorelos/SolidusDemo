@@ -35,7 +35,6 @@ import java.util.List;
  *
  */
 public class Product implements Serializable {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -77,7 +76,7 @@ public class Product implements Serializable {
     private Master master;
     @SerializedName("variants")
     @Expose
-    private List<Variant> variants = null;
+    private List<Master> variants = null;
     @SerializedName("option_types")
     @Expose
     private List<OptionType> optionTypes = null;
@@ -195,11 +194,11 @@ public class Product implements Serializable {
         this.master = master;
     }
 
-    public List<Variant> getVariants() {
+    public List<Master> getVariants() {
         return variants;
     }
 
-    public void setVariants(List<Variant> variants) {
+    public void setVariants(List<Master> variants) {
         this.variants = variants;
     }
 
