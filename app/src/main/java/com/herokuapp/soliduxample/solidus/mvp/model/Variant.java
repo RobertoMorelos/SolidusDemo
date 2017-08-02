@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.models;
+package com.herokuapp.soliduxample.solidus.mvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

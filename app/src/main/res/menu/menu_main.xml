@@ -1,4 +1,4 @@
 <menu
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.herokuapp.soliduxample.solidus.views.MainActivity">
+    tools:context=".mvp.view.activity.MainActivity">
 </menu>

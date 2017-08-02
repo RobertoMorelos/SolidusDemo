@@ -31,5 +31,12 @@ package com.herokuapp.soliduxample.solidus.api;
 public class Config {
     public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
     public static final String TOKEN = "ddcd14bbe6699211f8e157ca9b6812d9c699617c9a72caf7";
-    public static final String PRODUCTS_URL = "/api/products.json";
+
+    //API end points
+    static final String PRODUCTS_URL = "/api/products.json";
+
+    //API parameters
+    static final String PRODUCT_PARAMETER_PER_PAGE = "per_page";
+    static final String PRODUCT_PARAMETER_PAGE     = "page";
+    static final String PRODUCT_PARAMETER_TOKEN    = "token";
 }

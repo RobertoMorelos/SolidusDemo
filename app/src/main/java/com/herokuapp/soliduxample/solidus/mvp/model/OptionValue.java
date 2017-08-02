@@ -22,19 +22,18 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.models;
+package com.herokuapp.soliduxample.solidus.mvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Roberto Morelos on 3/6/17.
  *
  */
-public class Taxon implements Serializable {
+public class OptionValue implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -42,21 +41,18 @@ public class Taxon implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("pretty_name")
+    @SerializedName("presentation")
     @Expose
-    private String prettyName;
-    @SerializedName("permalink")
+    private String presentation;
+    @SerializedName("option_type_name")
     @Expose
-    private String permalink;
-    @SerializedName("parent_id")
+    private String optionTypeName;
+    @SerializedName("option_type_id")
     @Expose
-    private Integer parentId;
-    @SerializedName("taxonomy_id")
+    private Integer optionTypeId;
+    @SerializedName("option_type_presentation")
     @Expose
-    private Integer taxonomyId;
-    @SerializedName("taxons")
-    @Expose
-    private List<Object> taxons = null;
+    private String optionTypePresentation;
 
     public Integer getId() {
         return id;
@@ -74,44 +70,36 @@ public class Taxon implements Serializable {
         this.name = name;
     }
 
-    public String getPrettyName() {
-        return prettyName;
+    public String getPresentation() {
+        return presentation;
     }
 
-    public void setPrettyName(String prettyName) {
-        this.prettyName = prettyName;
+    public void setPresentation(String presentation) {
+        this.presentation = presentation;
     }
 
-    public String getPermalink() {
-        return permalink;
+    public String getOptionTypeName() {
+        return optionTypeName;
     }
 
-    public void setPermalink(String permalink) {
-        this.permalink = permalink;
+    public void setOptionTypeName(String optionTypeName) {
+        this.optionTypeName = optionTypeName;
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public Integer getOptionTypeId() {
+        return optionTypeId;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setOptionTypeId(Integer optionTypeId) {
+        this.optionTypeId = optionTypeId;
     }
 
-    public Integer getTaxonomyId() {
-        return taxonomyId;
+    public String getOptionTypePresentation() {
+        return optionTypePresentation;
     }
 
-    public void setTaxonomyId(Integer taxonomyId) {
-        this.taxonomyId = taxonomyId;
-    }
-
-    public List<Object> getTaxons() {
-        return taxons;
-    }
-
-    public void setTaxons(List<Object> taxons) {
-        this.taxons = taxons;
+    public void setOptionTypePresentation(String optionTypePresentation) {
+        this.optionTypePresentation = optionTypePresentation;
     }
 
 }

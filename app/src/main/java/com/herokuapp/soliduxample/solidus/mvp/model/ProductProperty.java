@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.models;
+package com.herokuapp.soliduxample.solidus.mvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -33,26 +33,23 @@ import java.io.Serializable;
  * Created by Roberto Morelos on 3/6/17.
  *
  */
-public class OptionValue implements Serializable {
+public class ProductProperty implements Serializable {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("name")
+    @SerializedName("product_id")
     @Expose
-    private String name;
-    @SerializedName("presentation")
+    private Integer productId;
+    @SerializedName("property_id")
     @Expose
-    private String presentation;
-    @SerializedName("option_type_name")
+    private Integer propertyId;
+    @SerializedName("value")
     @Expose
-    private String optionTypeName;
-    @SerializedName("option_type_id")
+    private String value;
+    @SerializedName("property_name")
     @Expose
-    private Integer optionTypeId;
-    @SerializedName("option_type_presentation")
-    @Expose
-    private String optionTypePresentation;
+    private String propertyName;
 
     public Integer getId() {
         return id;
@@ -62,44 +59,36 @@ public class OptionValue implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public String getPresentation() {
-        return presentation;
+    public Integer getPropertyId() {
+        return propertyId;
     }
 
-    public void setPresentation(String presentation) {
-        this.presentation = presentation;
+    public void setPropertyId(Integer propertyId) {
+        this.propertyId = propertyId;
     }
 
-    public String getOptionTypeName() {
-        return optionTypeName;
+    public String getValue() {
+        return value;
     }
 
-    public void setOptionTypeName(String optionTypeName) {
-        this.optionTypeName = optionTypeName;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public Integer getOptionTypeId() {
-        return optionTypeId;
+    public String getPropertyName() {
+        return propertyName;
     }
 
-    public void setOptionTypeId(Integer optionTypeId) {
-        this.optionTypeId = optionTypeId;
-    }
-
-    public String getOptionTypePresentation() {
-        return optionTypePresentation;
-    }
-
-    public void setOptionTypePresentation(String optionTypePresentation) {
-        this.optionTypePresentation = optionTypePresentation;
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 
 }

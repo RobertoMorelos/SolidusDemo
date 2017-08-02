@@ -22,10 +22,9 @@
 * SOFTWARE.
 * */
 
-package com.herokuapp.soliduxample.solidus.views;
+package com.herokuapp.soliduxample.solidus.mvp.view.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +35,8 @@ import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
 import com.herokuapp.soliduxample.solidus.api.Config;
-import com.herokuapp.soliduxample.solidus.app.Constants;
-import com.herokuapp.soliduxample.solidus.models.Image;
-import com.herokuapp.soliduxample.solidus.models.Product;
+import com.herokuapp.soliduxample.solidus.mvp.model.Image;
+import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -48,18 +46,19 @@ import java.util.List;
  * Created by Roberto Morelos on 3/6/17.
  * This is the adapter for displaying the products in the Recycler View.
  */
-class ProductsRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    //private static final String TAG = ProductsRecyclerView.class.getSimpleName();
+public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    //private static final String TAG = ProductsAdapter.class.getSimpleName();
 
     private List<Product> products;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
     /**
      * Public constructor.
      * @param context needed to use certain features.
      * @param  products the list of all products to display.
      */
-    ProductsRecyclerView(Context context, List<Product> products) {
+    public ProductsAdapter(Context context, List<Product> products) {
         this.products = products;
         this.context = context;
     }
@@ -116,12 +115,11 @@ class ProductsRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         productViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(context, ProductDetails.class);
-                registerIntent.putExtra(Constants.PRODUCT, product);
-                context.startActivity(registerIntent);
+                if (onItemClickListener != null){
+                    onItemClickListener.onItemClick(product);
+                }
             }
         });
-
     }
 
     /**
@@ -138,6 +136,39 @@ class ProductsRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public int getItemCount() {
         return products.size();
+    }
+
+    /**
+     * Sets a product list and updates the reference.
+     *
+     * @param productList: list of products to be added in the adapter.
+     */
+    public void add(List<Product> productList) {
+        this.products.addAll(productList);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Clears the adapter.
+     */
+    public void delete(){
+        this.products.clear();
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Sets the instance which will communicate the actions.
+     * @param onItemClickListener: instance listener.
+     */
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    /**
+     * Interface for handling clicks in certain item.
+     */
+    public interface OnItemClickListener {
+        void onItemClick(Product product);
     }
 
     /**

@@ -22,34 +22,41 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.models;
+package com.herokuapp.soliduxample.solidus.mvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Roberto Morelos on 3/6/17.
  *
  */
-public class ProductProperty implements Serializable {
+public class Taxon implements Serializable {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("product_id")
+    @SerializedName("name")
     @Expose
-    private Integer productId;
-    @SerializedName("property_id")
+    private String name;
+    @SerializedName("pretty_name")
     @Expose
-    private Integer propertyId;
-    @SerializedName("value")
+    private String prettyName;
+    @SerializedName("permalink")
     @Expose
-    private String value;
-    @SerializedName("property_name")
+    private String permalink;
+    @SerializedName("parent_id")
     @Expose
-    private String propertyName;
+    private Integer parentId;
+    @SerializedName("taxonomy_id")
+    @Expose
+    private Integer taxonomyId;
+    @SerializedName("taxons")
+    @Expose
+    private List<Object> taxons = null;
 
     public Integer getId() {
         return id;
@@ -59,36 +66,52 @@ public class ProductProperty implements Serializable {
         this.id = id;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public String getName() {
+        return name;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getPropertyId() {
-        return propertyId;
+    public String getPrettyName() {
+        return prettyName;
     }
 
-    public void setPropertyId(Integer propertyId) {
-        this.propertyId = propertyId;
+    public void setPrettyName(String prettyName) {
+        this.prettyName = prettyName;
     }
 
-    public String getValue() {
-        return value;
+    public String getPermalink() {
+        return permalink;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPermalink(String permalink) {
+        this.permalink = permalink;
     }
 
-    public String getPropertyName() {
-        return propertyName;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getTaxonomyId() {
+        return taxonomyId;
+    }
+
+    public void setTaxonomyId(Integer taxonomyId) {
+        this.taxonomyId = taxonomyId;
+    }
+
+    public List<Object> getTaxons() {
+        return taxons;
+    }
+
+    public void setTaxons(List<Object> taxons) {
+        this.taxons = taxons;
     }
 
 }

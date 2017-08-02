@@ -22,62 +22,32 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.models;
+package com.herokuapp.soliduxample.solidus.mvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 /**
- * Created by Roberto Morelos on 3/6/17.
- *
+ * @author Roberto Morelos
+ * @since 8/1/17
  */
-public class OptionType implements Serializable {
+public class Error {
+    public static final String ERROR_TYPE_UNHANDLED = "Error_type_unhandled";
+    public static final String ERROR_TYPE_INVALID_TOKEN = "Invalid token provided";
 
-    @SerializedName("id")
+    @SerializedName("error")
     @Expose
-    private Integer id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("presentation")
-    @Expose
-    private String presentation;
-    @SerializedName("position")
-    @Expose
-    private Integer position;
+    private String error;
 
-    public Integer getId() {
-        return id;
+    public Error(String error){
+        this.error = error;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getError() {
+        return error;
     }
 
-    public String getName() {
-        return name;
+    public void setError(String error) {
+        this.error = error;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPresentation() {
-        return presentation;
-    }
-
-    public void setPresentation(String presentation) {
-        this.presentation = presentation;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
 }

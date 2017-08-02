@@ -22,12 +22,14 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.views;
+package com.herokuapp.soliduxample.solidus.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -36,6 +38,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.herokuapp.soliduxample.solidus.R;
 import com.herokuapp.soliduxample.solidus.api.APIClient;
@@ -44,8 +47,9 @@ import com.herokuapp.soliduxample.solidus.api.Config;
 import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.helper.SpacesItemDecoration;
 import com.herokuapp.soliduxample.solidus.helper.Utility;
-import com.herokuapp.soliduxample.solidus.models.Product;
-import com.herokuapp.soliduxample.solidus.models.Products;
+import com.herokuapp.soliduxample.solidus.mvp.model.Product;
+import com.herokuapp.soliduxample.solidus.mvp.model.Products;
+import com.herokuapp.soliduxample.solidus.mvp.view.adapter.ProductsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +62,8 @@ import retrofit2.Response;
  * Created by Roberto Morelos on 3/5/17.
  * Main activity to display all the products in a recycler view.
  */
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+        ProductsAdapter.OnItemClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final APIClient taskService = ServiceGenerator.createService(APIClient.class);
     private static final int COLUMNS = 2;
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
 
-    private ProductsRecyclerView productsRecyclerView;
+    private ProductsAdapter productsRecyclerView;
     private List<Product> products = new ArrayList<>();
     private int currentPage = 1;
     private int totalProducts;
@@ -99,8 +104,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(new GridLayoutManager(this, COLUMNS));
         //this method allows us to decor every item in the grid
         recyclerView.addItemDecoration(new SpacesItemDecoration(getResources().getDimensionPixelSize(R.dimen.space_between_areas)));
+        //add a scroll listener for detecting the bottom of the recycler view
+        recyclerView.addOnScrollListener(onScrollListener);
         //we initialize our recycler view adapter
-        productsRecyclerView = new ProductsRecyclerView(MainActivity.this, products);
+        productsRecyclerView = new ProductsAdapter(MainActivity.this, products);
+        //set the listener for detecting when we click an item
+        productsRecyclerView.setOnItemClickListener(this);
         //set our customized adapter to the recyclerView
         recyclerView.setAdapter(productsRecyclerView);
         //set one custom color to the swipe refresh layout
@@ -142,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             //start showing the progress bar
             hideMessageView();
             //call the API to obtain all the services
-            Call<Products> call = taskService.getAllProducts(currentPage,Config.TOKEN);
+            Call<Products> call = taskService.getAllProducts(Config.TOKEN, Constants.PER_PAGE, currentPage);
             //enqueue the call so we can do it asynchronously
             call.enqueue(new Callback<Products>() {
                 @Override
@@ -237,4 +246,35 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         llMessageView.setVisibility(View.GONE);
     }
 
+    /**
+     * Method inherited from ProductsAdapter.OnItemClickListener.
+     */
+    @Override
+    public void onItemClick(Product product) {
+        Intent registerIntent = new Intent(this, ProductDetailsActivity.class);
+        registerIntent.putExtra(Constants.PRODUCT, product);
+        startActivity(registerIntent);
+    }
+
+    /**
+     * Detects when a recycler view is scrolling.
+     */
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView.getLayoutManager());
+
+            if(dy > 0) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                if ( (visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                   //TODO: call here the presenter
+                    Toast.makeText(getBaseContext(),"Reached the bottom", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 }

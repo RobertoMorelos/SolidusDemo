@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-package com.herokuapp.soliduxample.solidus.views;
+package com.herokuapp.soliduxample.solidus.mvp.view.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -44,11 +44,11 @@ import android.widget.TextView;
 import com.herokuapp.soliduxample.solidus.R;
 import com.herokuapp.soliduxample.solidus.api.Config;
 import com.herokuapp.soliduxample.solidus.app.Constants;
-import com.herokuapp.soliduxample.solidus.models.Classification;
-import com.herokuapp.soliduxample.solidus.models.Image;
-import com.herokuapp.soliduxample.solidus.models.Product;
-import com.herokuapp.soliduxample.solidus.models.ProductProperty;
-import com.herokuapp.soliduxample.solidus.models.Variant;
+import com.herokuapp.soliduxample.solidus.mvp.model.Classification;
+import com.herokuapp.soliduxample.solidus.mvp.model.Image;
+import com.herokuapp.soliduxample.solidus.mvp.model.Product;
+import com.herokuapp.soliduxample.solidus.mvp.model.ProductProperty;
+import com.herokuapp.soliduxample.solidus.mvp.model.Variant;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -58,8 +58,8 @@ import java.util.List;
  * Created by Roberto Morelos on 3/6/17.
  * This activity displays the detailed information of one product.
  */
-public class ProductDetails extends AppCompatActivity {
-    private static final String TAG = ProductDetails.class.getSimpleName();
+public class ProductDetailsActivity extends AppCompatActivity {
+    private static final String TAG = ProductDetailsActivity.class.getSimpleName();
     private ImageView ivProduct;
     private LinearLayout llProperties;
     private TableLayout tlTableProperties;
