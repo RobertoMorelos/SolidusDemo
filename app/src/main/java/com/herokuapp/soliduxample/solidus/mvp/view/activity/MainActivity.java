@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,34 +37,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.api.APIClient;
-import com.herokuapp.soliduxample.solidus.api.ServiceGenerator;
 import com.herokuapp.soliduxample.solidus.api.Config;
 import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.helper.SpacesItemDecoration;
 import com.herokuapp.soliduxample.solidus.helper.Utility;
+import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
-import com.herokuapp.soliduxample.solidus.mvp.model.Products;
+import com.herokuapp.soliduxample.solidus.mvp.presenter.ProductsPresenter;
 import com.herokuapp.soliduxample.solidus.mvp.view.adapter.ProductsAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Roberto Morelos on 3/5/17.
  * Main activity to display all the products in a recycler view.
  */
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
-        ProductsAdapter.OnItemClickListener{
+        ProductsAdapter.OnItemClickListener, ProductsPresenter.View{
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final APIClient taskService = ServiceGenerator.createService(APIClient.class);
     private static final int COLUMNS = 2;
 
     private LinearLayout llMessageView;
@@ -73,11 +64,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TextView tvMessageViewTitle;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-
-    private ProductsAdapter productsRecyclerView;
-    private List<Product> products = new ArrayList<>();
-    private int currentPage = 1;
-    private int totalProducts;
+    private ProductsAdapter productsAdapter;
+    private ProductsPresenter presenter;
 
     /**
      * Method inherited from AppCompatActivity.
@@ -107,20 +95,33 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //add a scroll listener for detecting the bottom of the recycler view
         recyclerView.addOnScrollListener(onScrollListener);
         //we initialize our recycler view adapter
-        productsRecyclerView = new ProductsAdapter(MainActivity.this, products);
+        productsAdapter = new ProductsAdapter(this);
         //set the listener for detecting when we click an item
-        productsRecyclerView.setOnItemClickListener(this);
+        productsAdapter.setOnItemClickListener(this);
         //set our customized adapter to the recyclerView
-        recyclerView.setAdapter(productsRecyclerView);
+        recyclerView.setAdapter(productsAdapter);
         //set one custom color to the swipe refresh layout
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-
         //assign the the listeners
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        //start fetching the products, so display the swipe refresh animation here
-        showProgress();
-        showProducts();
+        presenter = new ProductsPresenter(this, Config.TOKEN);
+        presenter.start();
+        //start the presenter
+        if (Utility.isNetworkAvailable(this)) {
+            presenter.getProducts(false);
+        }else{
+            showMessageView(Constants.TYPE_CONNECTION);
+        }
+    }
+
+    /**
+     * Method inherited from AppCompatActivity.
+     */
+    @Override
+    protected void onStop() {
+        presenter.stop();
+        super.onStop();
     }
 
     /**
@@ -139,84 +140,84 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     @Override
     public void onRefresh() {
-        showProducts();
-    }
-
-    /**
-     * It allows to fetch the products from the API and then display them in the recycler view.
-     */
-    private void showProducts(){
-        //check the Internet connection
-        if (Utility.isNetworkAvailable(this)){
-            //start showing the progress bar
-            hideMessageView();
-            //call the API to obtain all the services
-            Call<Products> call = taskService.getAllProducts(Config.TOKEN, Constants.PER_PAGE, currentPage);
-            //enqueue the call so we can do it asynchronously
-            call.enqueue(new Callback<Products>() {
-                @Override
-                public void onResponse(Call<Products> call, Response<Products> response) {
-                    //check if the API responds with a successful answer
-                    if (response.isSuccessful()) {
-                        //if so, then hide any previous message view, the progress bar and stop the refreshing animation
-                        hideProgress();
-                        //obtain how many products are
-                        totalProducts  = response.body().getTotalCount();
-                        //clear all previous products
-                        products.clear();
-                        //and assign the new ones to the same object, otherwise the adapter won't work.
-                        products.addAll(response.body().getProducts());
-                        if (totalProducts > 0){
-                            //if there are at least one product, display it
-                            recyclerView.setVisibility(View.VISIBLE);
-                            productsRecyclerView.notifyDataSetChanged();
-                        }else{
-                            //if there are not products, display a custom view
-                            showMessageView(Constants.TYPE_NO_CONTENT);
-                        }
-                    } else {
-                        //the response was not successful
-                        Log.e(TAG, "Error: " + response.message());
-                        //so hide the progress bar
-                        hideProgress();
-                        //and display a custom error view
-                        showMessageView(Constants.TYPE_ERROR);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Products> call, Throwable t) {
-                    //there was an error while performing the call
-                    Log.e(TAG, "Error: " + t);
-                    //so hide the progress bar
-                    hideProgress();
-                    //and show a custom error view
-                    showMessageView(Constants.TYPE_ERROR);
-                }
-            });
+        if (Utility.isNetworkAvailable(this)) {
+            presenter.getProducts(true);
         }else{
-            // there is no Internet connection, so display a custom view to let the user know that.
-            hideProgress();
-            showMessageView(Constants.TYPE_CONNECTION);
+            showProgress(false);
+            if (!productsAdapter.hasContent())
+                showMessageView(Constants.TYPE_CONNECTION);
         }
     }
 
     /**
-     * Start the swipe refresh layout animation.
+     * Method inherited from ProductsAdapter.OnItemClickListener.
      */
-    private void showProgress(){
-        swipeRefreshLayout.setRefreshing(true);
+    @Override
+    public void onItemClick(Product product) {
+        Intent registerIntent = new Intent(this, ProductDetailsActivity.class);
+        registerIntent.putExtra(Constants.PRODUCT, product);
+        startActivity(registerIntent);
     }
 
     /**
-     * Stop the swipe refresh layout animation.
+     * Method inherited from ProductsPresenter.View.
+     * It allows to fetch the products from the API and then display them in the recycler view.
      */
-    private void hideProgress(){
-        swipeRefreshLayout.setRefreshing(false);
+    @Override
+    public void addProducts(List<Product> products, boolean isReset) {
+        if (isReset) productsAdapter.clear();
+        if (products.size() > 0){
+            productsAdapter.add(products);
+        }else{
+            //if there are not products, display a custom view
+            showMessageView(Constants.TYPE_NO_CONTENT);
+        }
     }
 
     /**
-     * Show certain view according to the messageType.
+     * Method inherited from ProductsPresenter.View.
+     * Starts/stops the swipe refresh layout animation.
+     */
+    @Override
+    public void showProgress(boolean state) {
+        if (state) hideMessageView();
+        swipeRefreshLayout.setRefreshing(state);
+    }
+
+    /**
+     * Method inherited from ProductsPresenter.View.
+     */
+    @Override
+    public void onError(Error error) {
+        //there was an error while performing the call
+        Log.e(TAG, "Error: " + error.getError());
+        //and show a custom error view
+        showMessageView(Constants.TYPE_ERROR);
+    }
+
+    /**
+     * Detects when a recycler view is scrolling.
+     */
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView.getLayoutManager());
+
+            if(dy > 0) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                if ( (visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts(false);
+                }
+            }
+        }
+    };
+
+    /**
+     * Shows certain view according to the messageType.
      * @param messageType This parameter decides the type of message we will display and the icon.
      */
     private void showMessageView(String messageType){
@@ -240,41 +241,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     /**
-     * Hide the message view.
+     * Hides the message view.
      */
     private void hideMessageView(){
         llMessageView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Method inherited from ProductsAdapter.OnItemClickListener.
-     */
-    @Override
-    public void onItemClick(Product product) {
-        Intent registerIntent = new Intent(this, ProductDetailsActivity.class);
-        registerIntent.putExtra(Constants.PRODUCT, product);
-        startActivity(registerIntent);
-    }
-
-    /**
-     * Detects when a recycler view is scrolling.
-     */
-    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView.getLayoutManager());
-
-            if(dy > 0) {
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
-
-                if ( (visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                   //TODO: call here the presenter
-                    Toast.makeText(getBaseContext(),"Reached the bottom", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    };
 }

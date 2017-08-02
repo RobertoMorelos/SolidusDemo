@@ -40,6 +40,7 @@ import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,18 +49,15 @@ import java.util.List;
  */
 public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //private static final String TAG = ProductsAdapter.class.getSimpleName();
-
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
     private Context context;
     private OnItemClickListener onItemClickListener;
 
     /**
      * Public constructor.
      * @param context needed to use certain features.
-     * @param  products the list of all products to display.
      */
-    public ProductsAdapter(Context context, List<Product> products) {
-        this.products = products;
+    public ProductsAdapter(Context context) {
         this.context = context;
     }
 
@@ -151,9 +149,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     /**
      * Clears the adapter.
      */
-    public void delete(){
+    public void clear(){
         this.products.clear();
         notifyDataSetChanged();
+    }
+
+    public boolean hasContent(){
+        return products.size() > 0;
     }
 
     /**

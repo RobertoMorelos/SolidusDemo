@@ -43,17 +43,19 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     private boolean isLoading;
     private int maxPages = 1;
     private int currentPage = 1;
+    private String token;
+    private boolean isReset;
 
-    public void ProducsPresenter(View viewListener){
+    public ProductsPresenter(View viewListener, String token){
         this.interactor = new ProductsInteractor();
         this.viewListener = viewListener;
+        this.token = token;
     }
 
     /**
      * Gets called when the view is active.
      */
     public void start(){
-        viewListener.showProgress(true);
         interactor.setOrdersInteractorListener(this);
     }
 
@@ -67,22 +69,31 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     /**
      * Fetches orders and sets them in the adapter.
      */
-    public void getProducts(String token){
+    public void getProducts(boolean reset){
+        isReset = reset;
+        if (isReset) currentPage = 1;
         if (currentPage <= maxPages && !isLoading){
+            viewListener.showProgress(true);
             isLoading = true;
             interactor.getProducts(token, Constants.PER_PAGE, currentPage);
         }
     }
 
+    /**
+     * Method inherited from ProductsInteractor.InteractorListener.
+     */
     @Override
     public void onSuccess(Products products) {
         isLoading = false;
         currentPage += 1;
         maxPages = products.getPages();
         viewListener.showProgress(false);
-        viewListener.addProducts(products.getProducts());
+        viewListener.addProducts(products.getProducts(), isReset);
     }
 
+    /**
+     * Method inherited from ProductsInteractor.InteractorListener.
+     */
     @Override
     public void onFail(Error error) {
         isLoading = false;
@@ -96,7 +107,7 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
      * Interface for notifying the activity/view.
      */
     public interface View {
-        void addProducts(List<Product> products);
+        void addProducts(List<Product> products, boolean isReset);
         void showProgress(boolean state);
         void onError(Error error);
     }
