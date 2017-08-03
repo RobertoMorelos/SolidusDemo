@@ -34,9 +34,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.herokuapp.soliduxample.solidus.mvp.model.Image;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
+import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -55,6 +55,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     /**
      * Public constructor.
+     *
      * @param context needed to use certain features.
      */
     public ProductsAdapter(Context context) {
@@ -81,31 +82,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         List<Image> images = product.getMaster().getImages();
         productViewHolder.showProgress();
-        if (images.size() > 0){
-            String imageURL = ApiConfiguration.MAIN_URL + images.get(0).getProductUrl();
-            Picasso.with(context).load(imageURL).fit().error(R.drawable.product_not_available).into(productViewHolder.ivProduct, new Callback() {
-                @Override
-                public void onSuccess() {
-                    productViewHolder.hideProgress();
-                }
-
-                @Override
-                public void onError() {
-                    productViewHolder.hideProgress();
-                }
-            });
-        }else{
-            Picasso.with(context).load(R.drawable.product_not_available).fit().error(R.drawable.product_not_available).into(productViewHolder.ivProduct, new Callback() {
-                @Override
-                public void onSuccess() {
-                    productViewHolder.hideProgress();
-                }
-
-                @Override
-                public void onError() {
-                    productViewHolder.hideProgress();
-                }
-            });
+        if (images.size() > 0) {
+            updatePicture(images.get(0).getProductUrl(), productViewHolder);
+        } else {
+            updatePicture("", productViewHolder);
         }
 
         productViewHolder.tvTitle.setText(product.getName());
@@ -113,7 +93,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         productViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onItemClickListener != null){
+                if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(product.getId());
                 }
             }
@@ -137,6 +117,29 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     /**
+     * Changes the image content using a URL.
+     *
+     * @param URL: picture location.
+     */
+    private void updatePicture(String URL, final ProductViewHolder productViewHolder) {
+        String imageURL = ApiConfiguration.MAIN_URL + URL;
+        Picasso.with(context).load(imageURL).centerInside().fit()
+                .placeholder(R.drawable.place_holder_default)
+                .error(R.drawable.product_not_available)
+                .into(productViewHolder.ivProduct, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        productViewHolder.hideProgress();
+                    }
+
+                    @Override
+                    public void onError() {
+                        productViewHolder.hideProgress();
+                    }
+                });
+    }
+
+    /**
      * Sets a product list and updates the reference.
      *
      * @param productList: list of products to be added in the adapter.
@@ -149,7 +152,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     /**
      * Clears the adapter.
      */
-    public void clear(){
+    public void clear() {
         this.products.clear();
         notifyDataSetChanged();
     }
@@ -157,15 +160,16 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     /**
      * Determinates if products list is empty.
      */
-    public boolean hasContent(){
+    public boolean hasContent() {
         return products.size() > 0;
     }
 
     /**
      * Sets the instance which will communicate the actions.
+     *
      * @param onItemClickListener: instance listener.
      */
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -195,11 +199,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view = itemView;
         }
 
-        void showProgress(){
+        void showProgress() {
             progressBar.setVisibility(View.VISIBLE);
         }
 
-        void hideProgress(){
+        void hideProgress() {
             progressBar.setVisibility(View.GONE);
         }
     }

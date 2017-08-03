@@ -33,7 +33,7 @@ import android.view.View;
  * @since 3/6/17
  * Customizes spaces in the grid layout.
  */
-public class SpacesItemDecoration extends RecyclerView.ItemDecoration{
+public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
 
     public SpacesItemDecoration(int space) {
@@ -45,14 +45,14 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration{
         if (parent.getChildLayoutPosition(view) % 2 == 0) {
             outRect.left = space;
             outRect.right = space;
-        }else{
+        } else {
             outRect.left = 0;
             outRect.right = space;
         }
 
         outRect.top = 0;
         outRect.bottom = space;
-        if (parent.getChildLayoutPosition(view) == 0 ||  parent.getChildLayoutPosition(view) == 1){
+        if (parent.getChildLayoutPosition(view) == 0 || parent.getChildLayoutPosition(view) == 1) {
             outRect.top = space;
         }
     }

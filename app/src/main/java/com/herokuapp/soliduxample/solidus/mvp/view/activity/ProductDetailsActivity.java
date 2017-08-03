@@ -42,16 +42,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.herokuapp.soliduxample.solidus.R;
-import com.herokuapp.soliduxample.solidus.helper.Utility;
-import com.herokuapp.soliduxample.solidus.mvp.model.Error;
-import com.herokuapp.soliduxample.solidus.mvp.model.Master;
-import com.herokuapp.soliduxample.solidus.mvp.presenter.ProductDetailsPresenter;
-import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.herokuapp.soliduxample.solidus.app.Constants;
+import com.herokuapp.soliduxample.solidus.helper.Utility;
 import com.herokuapp.soliduxample.solidus.mvp.model.Classification;
+import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Image;
+import com.herokuapp.soliduxample.solidus.mvp.model.Master;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
 import com.herokuapp.soliduxample.solidus.mvp.model.ProductProperty;
+import com.herokuapp.soliduxample.solidus.mvp.presenter.ProductDetailsPresenter;
+import com.herokuapp.soliduxample.solidus.rest.ApiConfiguration;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -65,28 +65,28 @@ import butterknife.ButterKnife;
  * Displays the detailed information of one product.
  */
 public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsPresenter.View {
-    private static final  String TAG = ProductDetailsActivity.class.getSimpleName();
-    @BindView(R.id.activity_product_details_ivProduct)
+    private static final String TAG = ProductDetailsActivity.class.getSimpleName();
+    @BindView(R.id.image_product)
     ImageView ivProduct;
-    @BindView(R.id.activity_product_details_llProperties)
+    @BindView(R.id.linear_properties)
     LinearLayout llProperties;
-    @BindView(R.id.activity_product_details_tlTableProperties)
+    @BindView(R.id.table_properties)
     TableLayout tlTableProperties;
-    @BindView(R.id.activity_product_details_tvName)
+    @BindView(R.id.text_product_name)
     TextView tvName;
-    @BindView(R.id.activity_product_details_tvDescription)
+    @BindView(R.id.text_product_description)
     TextView tvDescription;
-    @BindView(R.id.activity_product_details_llVariants)
+    @BindView(R.id.linear_variants)
     LinearLayout llVariants;
-    @BindView(R.id.activity_product_details_rgVariants)
+    @BindView(R.id.radio_variants)
     RadioGroup rgVariants;
-    @BindView(R.id.activity_product_details_tvPrice)
+    @BindView(R.id.text_product_price)
     TextView tvPrice;
-    @BindView(R.id.activity_product_details_llSimilar)
+    @BindView(R.id.linear_similar)
     LinearLayout llSimilar;
-    @BindView(R.id.activity_product_details_llMainSimilar)
+    @BindView(R.id.linear_main_similar)
     LinearLayout llMainSimilar;
-    @BindView(R.id.activity_product_details_pbProgressBar)
+    @BindView(R.id.progress_product)
     ProgressBar progressBarImage;
     @BindView(R.id.progress_main_progress_bar)
     ProgressBar progressBar;
@@ -94,9 +94,9 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     LinearLayout linearWrapper;
     @BindView(R.id.linear_message_view)
     LinearLayout llMessageView;
-    @BindView(R.id.activity_main_ivMessageViewIcon)
+    @BindView(R.id.image_message_view_icon)
     ImageView ivMessageViewIcon;
-    @BindView(R.id.activity_main_tvMessageViewTitle)
+    @BindView(R.id.text_message_view_title)
     TextView tvMessageViewTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -116,7 +116,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         //set the toolbar as action bar
         setSupportActionBar(toolbar);
         //if action bar is not null set it with the back arrow
-        if (null != getSupportActionBar()){
+        if (null != getSupportActionBar()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -129,7 +129,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         //check internet connection, if there is then start fetching product details
         if (Utility.isNetworkAvailable(this)) {
             presenter.getProduct(productId);
-        }else{
+        } else {
             showMessageView(Constants.TYPE_CONNECTION);
         }
     }
@@ -187,41 +187,15 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     /**
      * Sets the information in the views.
      */
-    public void loadContent(Product product){
-        //show the progress in the image view
-        showProgress();
+    public void loadContent(Product product) {
         //get the images from the product object
         List<Image> images = product.getMaster().getImages();
         //if there are images then load the first one into the image view using Picasso
-        if (images.size() > 0){
-            String imageURL = ApiConfiguration.MAIN_URL + images.get(0).getProductUrl();
-            Picasso.with(this).load(imageURL).fit().error(R.drawable.product_not_available)
-                    .into(ivProduct, new Callback() {
-                @Override
-                public void onSuccess() {
-                    hideProgress();
-                }
-
-                @Override
-                public void onError() {
-                    hideProgress();
-                }
-            });
-        }else{
-            //there are not images available, so show a default one
-            Picasso.with(this).load(R.drawable.product_not_available).fit().into(ivProduct,
-                    new Callback() {
-                @Override
-                public void onSuccess() {
-                    hideProgress();
-                }
-
-                @Override
-                public void onError() {
-                    hideProgress();
-                }
-            });
+        String imageURL = "";
+        if (images.size() > 0) {
+            imageURL = images.get(0).getProductUrl();
         }
+        updatePicture(imageURL);
 
         //set the product name
         tvName.setText(product.getName());
@@ -232,22 +206,22 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         String description = product.getDescription();
         //if the description is not null then make visible the view and display it in there,
         // otherwise hide the view
-        if (null != description){
+        if (null != description) {
             tvDescription.setVisibility(View.VISIBLE);
             tvDescription.setText(description);
-        }else{
+        } else {
             tvDescription.setVisibility(View.GONE);
         }
 
         //if the product has variants then make the view visible and add radio buttons for each
         // variant, otherwise hide the view
-        if (product.getHasVariants()){
+        if (product.getHasVariants()) {
             llVariants.setVisibility(View.VISIBLE);
-            for (final Master variant: product.getVariants()) {
-                RadioButton newRadioButton = new RadioButton(this);
-                newRadioButton.setText(variant.getOptionsText());
-                newRadioButton.setId(variant.getId());
-                newRadioButton.setOnClickListener(new View.OnClickListener() {
+            for (final Master variant : product.getVariants()) {
+                RadioButton radioOptionVariant = new RadioButton(this);
+                radioOptionVariant.setText(variant.getOptionsText());
+                radioOptionVariant.setId(variant.getId());
+                radioOptionVariant.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         updatePicture(variant.getImages().get(0).getLargeUrl());
@@ -256,33 +230,38 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                 LinearLayout.LayoutParams layoutParams = new RadioGroup.LayoutParams(
                         RadioGroup.LayoutParams.WRAP_CONTENT,
                         RadioGroup.LayoutParams.WRAP_CONTENT);
-                rgVariants.addView(newRadioButton, 0, layoutParams);
+                rgVariants.addView(radioOptionVariant, 0, layoutParams);
             }
-        }else{
+        } else {
             llVariants.setVisibility(View.GONE);
         }
 
         //get a list of properties
         List<ProductProperty> productProperties = product.getProductProperties();
-        //if the product has properties then make the view visible and add rows to the view for each property, otherwise hide the view
-        if (productProperties.size()>0){
+        //if the product has properties then make the view visible and add rows to the view for
+        // each property, otherwise hide the view
+        if (productProperties.size() > 0) {
             llProperties.setVisibility(View.VISIBLE);
-            for (ProductProperty productProperty: productProperties) {
-                @SuppressLint("InflateParams") TableRow row = (TableRow) LayoutInflater.from(this).inflate(R.layout.table_row_properties, null);
-                ((TextView)row.findViewById(R.id.table_row_properties_tvTitle)).setText(productProperty.getPropertyName());
-                ((TextView)row.findViewById(R.id.table_row_properties_tvDescription)).setText(productProperty.getValue());
+            for (ProductProperty productProperty : productProperties) {
+                @SuppressLint("InflateParams") TableRow row = (TableRow) LayoutInflater.from(this)
+                        .inflate(R.layout.table_row_properties, null);
+                ((TextView) row.findViewById(R.id.text_properties_title))
+                        .setText(productProperty.getPropertyName());
+                ((TextView) row.findViewById(R.id.text_properties_description))
+                        .setText(productProperty.getValue());
                 tlTableProperties.addView(row);
             }
-        }else{
+        } else {
             llProperties.setVisibility(View.GONE);
         }
 
         //get a list of classifications
         List<Classification> classifications = product.getClassifications();
-        //if the product has classifications then make the view visible and add text views to the view for each classification, otherwise hide the view
-        if (classifications.size()>0){
+        //if the product has classifications then make the view visible and add text views to the
+        // view for each classification, otherwise hide the view
+        if (classifications.size() > 0) {
             llMainSimilar.setVisibility(View.VISIBLE);
-            for (Classification classification: classifications) {
+            for (Classification classification : classifications) {
                 TextView newTextView = new TextView(this);
                 newTextView.setText(classification.getTaxon().getName());
                 newTextView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -291,57 +270,64 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                         RadioGroup.LayoutParams.WRAP_CONTENT);
                 llSimilar.addView(newTextView, 0, layoutParams);
             }
-        }else{
+        } else {
             llMainSimilar.setVisibility(View.GONE);
         }
     }
 
-
-    private void updatePicture(String URL){
+    /**
+     * Changes the image content using a URL.
+     *
+     * @param URL: picture location.
+     */
+    private void updatePicture(String URL) {
         String imageURL = ApiConfiguration.MAIN_URL + URL;
         showProgress();
-        Picasso.with(this).load(imageURL).fit().error(R.drawable.product_not_available)
-                    .into(ivProduct, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            hideProgress();
-                        }
+        Picasso.with(this).load(imageURL).centerInside().fit()
+                .placeholder(R.drawable.place_holder_default)
+                .error(R.drawable.product_not_available)
+                .into(ivProduct, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        hideProgress();
+                    }
 
-                        @Override
-                        public void onError() {
-                            hideProgress();
-                        }
-                    });
+                    @Override
+                    public void onError() {
+                        hideProgress();
+                    }
+                });
     }
 
     /**
      * Shows/hides the progress bar in the picture.
      */
-    public void showProgress(){
+    public void showProgress() {
         progressBarImage.setVisibility(View.VISIBLE);
     }
 
     /**
      * Hides the progress bar in the picture
      */
-    public void hideProgress(){
+    public void hideProgress() {
         progressBarImage.setVisibility(View.GONE);
     }
 
     /**
      * Shows certain view according to the messageType.
+     *
      * @param messageType This parameter decides the type of message we will display and the icon.
      */
-    private void showMessageView(String messageType){
+    private void showMessageView(String messageType) {
         llMessageView.setVisibility(View.VISIBLE);
         linearWrapper.setVisibility(View.GONE);
 
-        switch (messageType){
-            case(Constants.TYPE_CONNECTION):
+        switch (messageType) {
+            case (Constants.TYPE_CONNECTION):
                 ivMessageViewIcon.setBackgroundResource(R.drawable.ic_connection_off);
                 tvMessageViewTitle.setText(getString(R.string.no_internet_connection_title));
                 break;
-            case(Constants.TYPE_ERROR):
+            case (Constants.TYPE_ERROR):
                 ivMessageViewIcon.setBackgroundResource(R.drawable.ic_gears);
                 tvMessageViewTitle.setText(getString(R.string.error_connection_title));
                 break;
@@ -351,7 +337,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     /**
      * Hides the message view.
      */
-    private void hideMessageView(){
+    private void hideMessageView() {
         llMessageView.setVisibility(View.GONE);
         linearWrapper.setVisibility(View.VISIBLE);
     }

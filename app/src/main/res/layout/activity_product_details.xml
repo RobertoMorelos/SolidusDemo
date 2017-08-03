@@ -16,18 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center|start"
                     android:text="@string/product_description"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/font_size_toolbar_title"/>
+                    android:textSize="@dimen/font_size_toolbar_title" />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
@@ -54,27 +56,58 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="200dp"
+                    android:background="@drawable/background_border_black">
 
                     <ImageView
-                        android:id="@+id/activity_product_details_ivProduct"
-                        android:layout_width="match_parent"
+                        android:id="@+id/image_product"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/background_border_black"
+                        android:layout_centerInParent="true"
                         android:contentDescription="@string/product_description"
-                        android:src="@drawable/product_not_available" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/place_holder_default" />
 
                     <ProgressBar
-                        android:id="@+id/activity_product_details_pbProgressBar"
+                        android:id="@+id/progress_product"
                         android:layout_width="@dimen/progressBar_square_size"
                         android:layout_height="@dimen/progressBar_square_size"
                         android:layout_centerInParent="true"
-                        android:visibility="visible"/>
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/activity_product_details_llProperties"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_between_areas"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/generic_product_title"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/space_between_areas"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <TextView
+                        android:id="@+id/text_product_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/generic_text_content_extended" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_properties"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_areas"
@@ -86,37 +119,18 @@
                         android:layout_height="wrap_content"
                         android:text="@string/properties"
                         android:textAllCaps="true"
-                        android:textColor="@color/textColorDark"/>
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
 
                     <TableLayout
-                        android:id="@+id/activity_product_details_tlTableProperties"
+                        android:id="@+id/table_properties"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </TableLayout>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/activity_product_details_tvName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_areas"
-                    android:text="@string/generic_product_title"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/space_between_areas"
-                    android:background="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/activity_product_details_tvDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/generic_text_content_extended" />
-
                 <LinearLayout
-                    android:id="@+id/activity_product_details_llVariants"
+                    android:id="@+id/linear_variants"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_areas"
@@ -128,15 +142,15 @@
                         android:layout_height="wrap_content"
                         android:text="@string/variants"
                         android:textAllCaps="true"
-                        android:textColor="@color/textColorDark"/>
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
 
                     <RadioGroup
-                        android:id="@+id/activity_product_details_rgVariants"
+                        android:id="@+id/radio_variants"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="start"
-                        android:orientation="vertical">
-                    </RadioGroup>
+                        android:orientation="vertical" />
 
                 </LinearLayout>
 
@@ -150,19 +164,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/price"
-                        android:textColor="@color/textColorDark"/>
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/activity_product_details_tvPrice"
+                        android:id="@+id/text_product_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/generic_product_price"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorAccent" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/activity_product_details_llMainSimilar"
+                    android:id="@+id/linear_main_similar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_areas"
@@ -173,10 +188,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/similar_items"
                         android:textAllCaps="true"
-                        android:textColor="@color/textColorDark"/>
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
 
                     <LinearLayout
-                        android:id="@+id/activity_product_details_llSimilar"
+                        android:id="@+id/linear_similar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -189,14 +205,14 @@
 
         </ScrollView>
 
-        <include layout="@layout/view_messages"/>
+        <include layout="@layout/view_messages" />
 
         <ProgressBar
             android:id="@+id/progress_main_progress_bar"
             android:layout_width="@dimen/progressBar_square_size"
             android:layout_height="@dimen/progressBar_square_size"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

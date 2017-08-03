@@ -46,17 +46,18 @@ public class ProductDetailsInteractor {
 
     /**
      * Gets all products from certain user.
-     * @param token: user token.
+     *
+     * @param token:     user token.
      * @param idProduct: id to fetch details.
      */
-    public void getProduct(String token, int idProduct){
+    public void getProduct(String token, int idProduct) {
         call = RestService.createService(RestAPI.class).getProductDetails(token, idProduct);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     interactorListener.onSuccess(response.body());
-                }else{
+                } else {
                     try {
                         interactorListener.onFail(new Error(response.errorBody().string()));
                     } catch (IOException e) {
@@ -76,12 +77,13 @@ public class ProductDetailsInteractor {
     /**
      * Cancels the request when the view is not longer active.
      */
-    public void cancelRequest(){
-       if (call != null) if (call.isExecuted()) call.cancel();
+    public void cancelRequest() {
+        if (call != null) if (call.isExecuted()) call.cancel();
     }
 
     /**
      * Sets the listener.
+     *
      * @param interactorListener: instance of the listener.
      */
     public void setInteractorListener(InteractorListener interactorListener) {
@@ -91,8 +93,9 @@ public class ProductDetailsInteractor {
     /**
      * Listener for interacting with the Presenter.
      */
-    public interface InteractorListener{
+    public interface InteractorListener {
         void onSuccess(Product products);
+
         void onFail(Error error);
     }
 }

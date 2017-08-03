@@ -43,9 +43,9 @@ public interface RestAPI {
     /**
      * Obtains all the products per page.
      *
-     * @param token: Needed for the API.
+     * @param token:   Needed for the API.
      * @param perPage: How many items per page.
-     * @param page: The page which will get the information.
+     * @param page:    The page which will get the information.
      */
     @GET(ApiConfiguration.URL_PRODUCTS)
     Call<Products> getAllProducts(
@@ -57,7 +57,7 @@ public interface RestAPI {
     /**
      * Obtains product details by id.
      *
-     * @param token: Needed for the API.
+     * @param token:     Needed for the API.
      * @param productId: Id for request.
      */
     @GET(ApiConfiguration.URL_PRODUCT_DETAILS)

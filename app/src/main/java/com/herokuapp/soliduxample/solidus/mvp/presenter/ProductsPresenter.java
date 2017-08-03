@@ -37,7 +37,7 @@ import java.util.List;
  * @since 8/1/17.
  * Obtains all products from certain user.
  */
-public class ProductsPresenter implements ProductsInteractor.InteractorListener{
+public class ProductsPresenter implements ProductsInteractor.InteractorListener {
     private ProductsInteractor interactor;
     private View viewListener;
     private boolean isLoading;
@@ -46,7 +46,7 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     private String token;
     private boolean isLoadingMore;
 
-    public ProductsPresenter(View viewListener, String token){
+    public ProductsPresenter(View viewListener, String token) {
         this.interactor = new ProductsInteractor();
         this.viewListener = viewListener;
         this.token = token;
@@ -55,24 +55,24 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     /**
      * Gets called when the view is active.
      */
-    public void start(){
+    public void start() {
         interactor.setInteractorListener(this);
     }
 
     /**
      * Gets called when the view is no longer active.
      */
-    public void stop(){
+    public void stop() {
         interactor.cancelRequest();
     }
 
     /**
      * Fetches orders and sets them in the adapter.
      */
-    public void getProducts(boolean reset){
+    public void getProducts(boolean reset) {
         isLoadingMore = !reset;
         if (reset) currentPage = 1;
-        if (currentPage <= maxPages && !isLoading){
+        if (currentPage <= maxPages && !isLoading) {
             viewListener.showProgress(true);
             isLoading = true;
             interactor.getProducts(token, Constants.PER_PAGE, currentPage);
@@ -108,7 +108,9 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener{
      */
     public interface View {
         void addProducts(List<Product> products, boolean isLoadingMore);
+
         void showProgress(boolean state);
+
         void onError(Error error);
     }
 }

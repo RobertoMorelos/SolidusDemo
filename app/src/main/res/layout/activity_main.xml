@@ -12,11 +12,12 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/activity_main_toolbar"
+            android:id="@+id/toolbar_home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -24,9 +25,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/toolbar_image_height"
-                    android:src="@drawable/solidus_logo"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@string/app_image_title_description"
-                    android:layout_centerInParent="true" />
+                    android:src="@drawable/solidus_logo" />
+
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
@@ -37,20 +39,19 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/activity_main_swipeContainer"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/activity_main_recyclerView"
+                android:id="@+id/recycler_prducts"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <include layout="@layout/view_messages"/>
+        <include layout="@layout/view_messages" />
 
     </RelativeLayout>
 

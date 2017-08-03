@@ -35,6 +35,7 @@ import android.net.ConnectivityManager;
 public class Utility {
     /**
      * Checks the connection state (WI-FI or data).
+     *
      * @param context: needed for the ConnectivityManager.
      * @return boolean If enabled, return true. If not, return false.
      */

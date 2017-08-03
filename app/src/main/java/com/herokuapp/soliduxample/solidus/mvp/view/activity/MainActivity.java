@@ -57,24 +57,47 @@ import butterknife.ButterKnife;
  * Displays all the products in a recycler view.
  */
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
-        ProductsAdapter.OnItemClickListener, ProductsPresenter.View{
+        ProductsAdapter.OnItemClickListener, ProductsPresenter.View {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int COLUMNS = 2;
 
     @BindView(R.id.linear_message_view)
     LinearLayout llMessageView;
-    @BindView(R.id.activity_main_ivMessageViewIcon)
+    @BindView(R.id.image_message_view_icon)
     ImageView ivMessageViewIcon;
-    @BindView(R.id.activity_main_tvMessageViewTitle)
+    @BindView(R.id.text_message_view_title)
     TextView tvMessageViewTitle;
-    @BindView(R.id.activity_main_swipeContainer)
+    @BindView(R.id.swipe_refresh_view)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.activity_main_recyclerView)
+    @BindView(R.id.recycler_prducts)
     RecyclerView recyclerView;
-    @BindView(R.id.activity_main_toolbar)
+    @BindView(R.id.toolbar_home_toolbar)
     Toolbar toolbar;
     private ProductsPresenter presenter;
     private ProductsAdapter productsAdapter;
+    /**
+     * Detects when a recycler view is scrolling.
+     */
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView
+                    .getLayoutManager());
+
+            if (dy > 0) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                //if the last item is visible
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    //get more products only if internet connection available
+                    if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts(false);
+                }
+            }
+        }
+    };
 
     /**
      * Method inherited from AppCompatActivity.
@@ -115,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //check internet connection, if there is then start fetching products
         if (Utility.isNetworkAvailable(this)) {
             presenter.getProducts(false);
-        }else{
+        } else {
             showMessageView(Constants.TYPE_CONNECTION);
         }
     }
@@ -149,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //if internet available then fetch products resetting the adapter (from page one).
         if (Utility.isNetworkAvailable(this)) {
             presenter.getProducts(true);
-        }else{
+        } else {
             showProgress(false);
             if (!productsAdapter.hasContent())
                 showMessageView(Constants.TYPE_CONNECTION);
@@ -176,9 +199,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //if false, means the adapter must be reset.
         if (!isLoadingMore) productsAdapter.clear();
         //add products to the adapter
-        if (products.size() > 0){
+        if (products.size() > 0) {
             productsAdapter.add(products);
-        }else{
+        } else {
             //if there are not products, display a custom view
             showMessageView(Constants.TYPE_NO_CONTENT);
         }
@@ -208,48 +231,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     /**
-     * Detects when a recycler view is scrolling.
-     */
-    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView
-                    .getLayoutManager());
-
-            if(dy > 0) {
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
-
-                //if the last item is visible
-                if ( (visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                    //get more products only if internet connection available
-                    if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts(false);
-                }
-            }
-        }
-    };
-
-    /**
      * Shows certain view according to the messageType.
+     *
      * @param messageType This parameter decides the type of message we will display and the icon.
      */
-    private void showMessageView(String messageType){
+    private void showMessageView(String messageType) {
         //if message view is visible then recycler view must not
         llMessageView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-        switch (messageType){
-            case(Constants.TYPE_CONNECTION):
+        switch (messageType) {
+            case (Constants.TYPE_CONNECTION):
                 ivMessageViewIcon.setBackgroundResource(R.drawable.ic_connection_off);
                 tvMessageViewTitle.setText(getString(R.string.no_internet_connection_title));
                 break;
-            case(Constants.TYPE_ERROR):
+            case (Constants.TYPE_ERROR):
                 ivMessageViewIcon.setBackgroundResource(R.drawable.ic_gears);
                 tvMessageViewTitle.setText(getString(R.string.error_connection_title));
                 break;
-            case(Constants.TYPE_NO_CONTENT):
+            case (Constants.TYPE_NO_CONTENT):
                 ivMessageViewIcon.setBackgroundResource(R.drawable.ic_empty_cart);
                 tvMessageViewTitle.setText(getString(R.string.no_content_title));
                 break;
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     /**
      * Hides the message view.
      */
-    private void hideMessageView(){
+    private void hideMessageView() {
         //if message view is not visible then recycler view must be
         llMessageView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);

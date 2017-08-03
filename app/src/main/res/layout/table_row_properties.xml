@@ -5,13 +5,13 @@
     android:weightSum="2">
 
     <TextView
-        android:id="@+id/table_row_properties_tvTitle"
+        android:id="@+id/text_properties_title"
         android:layout_weight="1"
         android:padding="@dimen/space_between_areas"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/table_row_properties_tvDescription"
+        android:id="@+id/text_properties_description"
         android:layout_weight="1"
         android:gravity="end"
         android:padding="@dimen/space_between_areas"

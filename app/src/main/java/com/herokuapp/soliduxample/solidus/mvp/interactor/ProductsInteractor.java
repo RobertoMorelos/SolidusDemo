@@ -24,10 +24,10 @@
 
 package com.herokuapp.soliduxample.solidus.mvp.interactor;
 
-import com.herokuapp.soliduxample.solidus.rest.RestAPI;
-import com.herokuapp.soliduxample.solidus.rest.RestService;
 import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Products;
+import com.herokuapp.soliduxample.solidus.rest.RestAPI;
+import com.herokuapp.soliduxample.solidus.rest.RestService;
 
 import java.io.IOException;
 
@@ -46,17 +46,18 @@ public class ProductsInteractor {
 
     /**
      * Gets all products from certain user.
+     *
      * @param token: user token.
-     * @param page: current page to fetch.
+     * @param page:  current page to fetch.
      */
-    public void getProducts(String token, int perPage, int page){
+    public void getProducts(String token, int perPage, int page) {
         call = RestService.createService(RestAPI.class).getAllProducts(token, perPage, page);
         call.enqueue(new Callback<Products>() {
             @Override
             public void onResponse(Call<Products> call, Response<Products> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     interactorListener.onSuccess(response.body());
-                }else{
+                } else {
                     try {
                         interactorListener.onFail(new Error(response.errorBody().string()));
                     } catch (IOException e) {
@@ -76,12 +77,13 @@ public class ProductsInteractor {
     /**
      * Cancels the request when the view is not longer active.
      */
-    public void cancelRequest(){
-       if (call != null) if (call.isExecuted()) call.cancel();
+    public void cancelRequest() {
+        if (call != null) if (call.isExecuted()) call.cancel();
     }
 
     /**
      * Sets the listener.
+     *
      * @param interactorListener: instance of the listener.
      */
     public void setInteractorListener(InteractorListener interactorListener) {
@@ -91,8 +93,9 @@ public class ProductsInteractor {
     /**
      * Listener for interacting with the Presenter.
      */
-    public interface InteractorListener{
+    public interface InteractorListener {
         void onSuccess(Products products);
+
         void onFail(Error error);
     }
 }

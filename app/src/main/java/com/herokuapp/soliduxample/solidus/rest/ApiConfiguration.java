@@ -32,20 +32,18 @@ import java.util.concurrent.TimeUnit;
  * Contains the main configuration info for the API.
  */
 public class ApiConfiguration {
+    //Base URL
+    //public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
+    public static final String MAIN_URL = "https://solidus-lib-store.herokuapp.com/";
     //Time out
     static final int TIME_OUT = 15;
     static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
-
-    //Base URL
-    public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
-
     //API parameters
     static final String PRODUCT_PARAMETER_PER_PAGE = "per_page";
-    static final String PRODUCT_PARAMETER_PAGE     = "page";
-    static final String PRODUCT_PARAMETER_ID       = "id";
-    static final String PRODUCT_PARAMETER_TOKEN    = "X-Spree-Token";
-
+    static final String PRODUCT_PARAMETER_PAGE = "page";
+    static final String PRODUCT_PARAMETER_ID = "id";
+    static final String PRODUCT_PARAMETER_TOKEN = "X-Spree-Token";
     //API end points
     static final String URL_PRODUCTS = "/api/products";
-    static final String URL_PRODUCT_DETAILS = "/api/products/{" + PRODUCT_PARAMETER_ID +"}";
+    static final String URL_PRODUCT_DETAILS = "/api/products/{" + PRODUCT_PARAMETER_ID + "}";
 }
