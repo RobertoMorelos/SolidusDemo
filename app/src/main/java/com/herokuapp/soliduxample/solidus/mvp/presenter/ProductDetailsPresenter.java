@@ -24,26 +24,21 @@
 
 package com.herokuapp.soliduxample.solidus.mvp.presenter;
 
-import com.herokuapp.soliduxample.solidus.app.Constants;
 import com.herokuapp.soliduxample.solidus.mvp.interactor.ProductDetailsInteractor;
-import com.herokuapp.soliduxample.solidus.mvp.interactor.ProductsInteractor;
 import com.herokuapp.soliduxample.solidus.mvp.model.Error;
 import com.herokuapp.soliduxample.solidus.mvp.model.Product;
-import com.herokuapp.soliduxample.solidus.mvp.model.Products;
-
-import java.util.List;
 
 /**
  * @author Roberto Morelos.
  * @since 8/1/17.
- * Presenter for obtaining all product details from certain user.
+ * Obtains all product details from certain user.
  */
-public class ProductDetailsPresenter implements ProductDetailsInteractor.InteractorListener{
+public class ProductDetailsPresenter implements ProductDetailsInteractor.InteractorListener {
     private ProductDetailsInteractor interactor;
     private View viewListener;
     private String token;
 
-    public ProductDetailsPresenter(View viewListener, String token){
+    public ProductDetailsPresenter(View viewListener, String token) {
         this.interactor = new ProductDetailsInteractor();
         this.viewListener = viewListener;
         this.token = token;
@@ -52,21 +47,21 @@ public class ProductDetailsPresenter implements ProductDetailsInteractor.Interac
     /**
      * Gets called when the view is active.
      */
-    public void start(){
+    public void start() {
         interactor.setInteractorListener(this);
     }
 
     /**
      * Gets called when the view is no longer active.
      */
-    public void stop(){
+    public void stop() {
         interactor.cancelRequest();
     }
 
     /**
      * Fetches orders and sets them in the adapter.
      */
-    public void getProduct(int id){
+    public void getProduct(int id) {
         viewListener.showProgress(true);
         interactor.getProduct(token, id);
     }
@@ -96,7 +91,9 @@ public class ProductDetailsPresenter implements ProductDetailsInteractor.Interac
      */
     public interface View {
         void onProductFetched(Product product);
+
         void showProgress(boolean state);
+
         void onError(Error error);
     }
 }

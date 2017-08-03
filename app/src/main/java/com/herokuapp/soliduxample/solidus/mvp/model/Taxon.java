@@ -27,14 +27,14 @@ package com.herokuapp.soliduxample.solidus.mvp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Roberto Morelos on 3/6/17.
- *
+ * @author Roberto Morelos
+ * @since 3/6/17
  */
-public class Taxon implements Serializable {
+@SuppressWarnings("unused")
+public class Taxon {
     @SerializedName("id")
     @Expose
     private Integer id;

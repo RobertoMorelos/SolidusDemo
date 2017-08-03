@@ -49,22 +49,32 @@ import com.herokuapp.soliduxample.solidus.mvp.view.adapter.ProductsAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Roberto Morelos on 3/5/17.
- * Main activity to display all the products in a recycler view.
+ * Displays all the products in a recycler view.
  */
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
         ProductsAdapter.OnItemClickListener, ProductsPresenter.View{
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int COLUMNS = 2;
 
-    private LinearLayout llMessageView;
-    private ImageView ivMessageViewIcon;
-    private TextView tvMessageViewTitle;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
-    private ProductsAdapter productsAdapter;
+    @BindView(R.id.linear_message_view)
+    LinearLayout llMessageView;
+    @BindView(R.id.activity_main_ivMessageViewIcon)
+    ImageView ivMessageViewIcon;
+    @BindView(R.id.activity_main_tvMessageViewTitle)
+    TextView tvMessageViewTitle;
+    @BindView(R.id.activity_main_swipeContainer)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.activity_main_recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.activity_main_toolbar)
+    Toolbar toolbar;
     private ProductsPresenter presenter;
+    private ProductsAdapter productsAdapter;
 
     /**
      * Method inherited from AppCompatActivity.
@@ -76,12 +86,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //We set link the view with the activity
         setContentView(R.layout.activity_main);
         //find all the views we will use and assign them to objects
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
-        llMessageView = (LinearLayout) findViewById(R.id.activity_main_llMessageView);
-        ivMessageViewIcon = (ImageView) findViewById(R.id.activity_main_ivMessageViewIcon);
-        tvMessageViewTitle = (TextView) findViewById(R.id.activity_main_tvMessageViewTitle);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipeContainer);
-        recyclerView = (RecyclerView) findViewById(R.id.activity_main_recyclerView);
+        ButterKnife.bind(this);
 
         //set the toolbar as action bar
         setSupportActionBar(toolbar);
@@ -105,8 +110,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setOnRefreshListener(this);
 
         presenter = new ProductsPresenter(this, Constants.TOKEN);
-        presenter.start();
         //start the presenter
+        presenter.start();
+        //check internet connection, if there is then start fetching products
         if (Utility.isNetworkAvailable(this)) {
             presenter.getProducts(false);
         }else{
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     @Override
     protected void onStop() {
+        //stop the presenter
         presenter.stop();
         super.onStop();
     }
@@ -139,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     @Override
     public void onRefresh() {
+        //if internet available then fetch products resetting the adapter (from page one).
         if (Utility.isNetworkAvailable(this)) {
             presenter.getProducts(true);
         }else{
@@ -150,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     /**
      * Method inherited from ProductsAdapter.OnItemClickListener.
+     * Launches the next view to show product details.
      */
     @Override
     public void onItemClick(int productId) {
@@ -160,11 +169,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     /**
      * Method inherited from ProductsPresenter.View.
-     * It allows to fetch the products from the API and then display them in the recycler view.
+     * Handles products fetched from the API.
      */
     @Override
     public void addProducts(List<Product> products, boolean isLoadingMore) {
+        //if false, means the adapter must be reset.
         if (!isLoadingMore) productsAdapter.clear();
+        //add products to the adapter
         if (products.size() > 0){
             productsAdapter.add(products);
         }else{
@@ -179,7 +190,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     @Override
     public void showProgress(boolean state) {
+        //hide the view until the information is fetched
         if (state) hideMessageView();
+        //stop or start the refreshing animation
         swipeRefreshLayout.setRefreshing(state);
     }
 
@@ -201,14 +214,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView.getLayoutManager());
+            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView
+                    .getLayoutManager());
 
             if(dy > 0) {
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
 
+                //if the last item is visible
                 if ( (visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    //get more products only if internet connection available
                     if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts(false);
                 }
             }
@@ -220,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * @param messageType This parameter decides the type of message we will display and the icon.
      */
     private void showMessageView(String messageType){
+        //if message view is visible then recycler view must not
         llMessageView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
@@ -243,8 +260,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Hides the message view.
      */
     private void hideMessageView(){
+        //if message view is not visible then recycler view must be
         llMessageView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
-
 }

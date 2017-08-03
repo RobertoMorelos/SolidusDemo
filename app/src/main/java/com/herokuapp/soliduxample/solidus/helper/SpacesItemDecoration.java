@@ -29,7 +29,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by Roberto Morelos on 3/6/17.
+ * @author Roberto Morelos
+ * @since 3/6/17
  * Customizes spaces in the grid layout.
  */
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration{

@@ -44,11 +44,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Roberto Morelos on 3/6/17.
- * This is the adapter for displaying the products in the Recycler View.
+ * @author Roberto Morelos
+ * @since 3/6/17
+ * Displays products in a Recycler View.
  */
 public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    //private static final String TAG = ProductsAdapter.class.getSimpleName();
     private List<Product> products = new ArrayList<>();
     private Context context;
     private OnItemClickListener onItemClickListener;
@@ -154,6 +154,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
+    /**
+     * Determinates if products list is empty.
+     */
     public boolean hasContent(){
         return products.size() > 0;
     }

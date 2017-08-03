@@ -50,39 +50,7 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <LinearLayout
-            android:id="@+id/activity_main_llMessageView"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/message_edge"
-            android:layout_marginLeft="@dimen/message_edge"
-            android:layout_marginRight="@dimen/message_edge"
-            android:layout_marginStart="@dimen/message_edge"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/activity_main_ivMessageViewIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/app_name"
-                android:background="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/activity_main_tvMessageViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/textColor"
-                android:layout_marginTop="@dimen/space_between_areas"
-                android:text="@string/generic_text_content"
-                android:textAlignment="center" />
-
-        </LinearLayout>
+        <include layout="@layout/view_messages"/>
 
     </RelativeLayout>
 

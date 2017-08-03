@@ -31,6 +31,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Roberto Morelos
  * @since 8/1/17
  */
+@SuppressWarnings("unused")
 public class Error {
     public static final String ERROR_TYPE_UNHANDLED = "Error_type_unhandled";
     public static final String ERROR_TYPE_INVALID_TOKEN = "Invalid token provided";

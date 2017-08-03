@@ -27,8 +27,9 @@ package com.herokuapp.soliduxample.solidus.rest;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Roberto Morelos on 3/5/17.
- * This class contains the main configuration info for the app.
+ * @author Roberto Morelos
+ * @since 3/5/17
+ * Contains the main configuration info for the API.
  */
 public class ApiConfiguration {
     //Time out

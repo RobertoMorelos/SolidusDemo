@@ -24,7 +24,7 @@
 
 package com.herokuapp.soliduxample.solidus.rest;
 
-import java.util.concurrent.TimeUnit;
+import com.herokuapp.soliduxample.solidus.app.Constants;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,30 +32,35 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Roberto Morelos on 3/5/17.
+ * @author Roberto Morelos
+ * @since 3/5/17
  * Uses the Retrofit service, including some features like logs for debugging
  * and increasing the timeout.
  */
 public class RestService {
+    private static Retrofit.Builder builder = new Retrofit.Builder()
+            .baseUrl(ApiConfiguration.MAIN_URL).addConverterFactory(GsonConverterFactory.create());
+    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+            .connectTimeout(ApiConfiguration.TIME_OUT, ApiConfiguration.TIME_UNIT)
+            .readTimeout(ApiConfiguration.TIME_OUT, ApiConfiguration.TIME_UNIT)
+            .writeTimeout(ApiConfiguration.TIME_OUT, ApiConfiguration.TIME_UNIT)
+            .addInterceptor(getLogs());
 
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-                    .baseUrl(ApiConfiguration.MAIN_URL)
-                    .addConverterFactory(GsonConverterFactory.create());
-
-    private static Retrofit retrofit = builder.build();
-
-    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS);
-
-    public static <S> S createService(
-            Class<S> serviceClass) {
-        if (!httpClient.interceptors().contains(logging)) {
-            httpClient.addInterceptor(logging);
-            builder.client(httpClient.build());
-            retrofit = builder.build();
+    /**
+     * Defines the level of the logs.
+     */
+    private static HttpLoggingInterceptor getLogs() {
+        if (Constants.ENABLE_API_LOGS) {
+            return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE);
         }
-        return retrofit.create(serviceClass);
+    }
+
+    /**
+     * Creates the client service.
+     */
+    public static <S> S createService(Class<S> serviceClass) {
+        return builder.client(httpClient.build()).build().create(serviceClass);
     }
 }

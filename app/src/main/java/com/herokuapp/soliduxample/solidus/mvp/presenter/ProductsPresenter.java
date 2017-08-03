@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * @author Roberto Morelos.
  * @since 8/1/17.
- * Presenter for obtaining all products from certain user.
+ * Obtains all products from certain user.
  */
 public class ProductsPresenter implements ProductsInteractor.InteractorListener{
     private ProductsInteractor interactor;

@@ -189,12 +189,14 @@
 
         </ScrollView>
 
+        <include layout="@layout/view_messages"/>
+
         <ProgressBar
             android:id="@+id/progress_main_progress_bar"
             android:layout_width="@dimen/progressBar_square_size"
             android:layout_height="@dimen/progressBar_square_size"
             android:layout_centerInParent="true"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

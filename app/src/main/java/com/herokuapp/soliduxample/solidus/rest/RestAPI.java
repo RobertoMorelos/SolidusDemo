@@ -41,7 +41,7 @@ import retrofit2.http.Query;
 public interface RestAPI {
 
     /**
-     * Obtain all the products per page.
+     * Obtains all the products per page.
      *
      * @param token: Needed for the API.
      * @param perPage: How many items per page.
@@ -55,7 +55,7 @@ public interface RestAPI {
     );
 
     /**
-     * Obtain product details by id.
+     * Obtains product details by id.
      *
      * @param token: Needed for the API.
      * @param productId: Id for request.
