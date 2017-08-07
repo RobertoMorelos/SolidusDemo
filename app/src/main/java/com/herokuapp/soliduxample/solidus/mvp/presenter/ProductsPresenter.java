@@ -44,19 +44,21 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener 
     private int maxPages = 1;
     private int currentPage = 1;
     private String token;
-    private boolean isLoadingMore;
+    private boolean isLoadingMore = false;
 
     public ProductsPresenter(View viewListener, String token) {
         this.interactor = new ProductsInteractor();
         this.viewListener = viewListener;
         this.token = token;
+        interactor.setInteractorListener(this);
     }
 
     /**
      * Gets called when the view is active.
      */
     public void start() {
-        interactor.setInteractorListener(this);
+        currentPage = 1;
+        getProducts();
     }
 
     /**
@@ -69,9 +71,8 @@ public class ProductsPresenter implements ProductsInteractor.InteractorListener 
     /**
      * Fetches orders and sets them in the adapter.
      */
-    public void getProducts(boolean reset) {
-        isLoadingMore = !reset;
-        if (reset) currentPage = 1;
+    public void getProducts() {
+        isLoadingMore = currentPage > 1;
         if (currentPage <= maxPages && !isLoading) {
             viewListener.showProgress(true);
             isLoading = true;

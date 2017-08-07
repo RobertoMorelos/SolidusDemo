@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class ApiConfiguration {
     //Base URL
     //public static final String MAIN_URL = "https://soliduxample.herokuapp.com";
-    public static final String MAIN_URL = "https://solidus-lib-store.herokuapp.com/";
+    public static final String MAIN_URL = "https://solidus-lib.herokuapp.com/";
     //Time out
     static final int TIME_OUT = 15;
     static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;

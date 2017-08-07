@@ -36,6 +36,6 @@ public class Constants {
     public static final String PRODUCT_ID = "product_id";
     public static final int PER_PAGE = 10;
     public static final boolean ENABLE_API_LOGS = true;
-    //public static final String TOKEN            = "ddcd14bbe6699211f8e157ca9b6812d9c699617c9a72caf7";
-    public static final String TOKEN = "57f8cccb2d28caf3d0a4f30d60e2262282bfa60ca51e8295";
+    //public static final String TOKEN = "ddcd14bbe6699211f8e157ca9b6812d9c699617c9a72caf7";
+    public static final String TOKEN = "b5e756702ad41e82973e79ed7c3785bf6bba9adfc163b146";
 }

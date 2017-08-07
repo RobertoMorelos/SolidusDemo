@@ -75,29 +75,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     Toolbar toolbar;
     private ProductsPresenter presenter;
     private ProductsAdapter productsAdapter;
-    /**
-     * Detects when a recycler view is scrolling.
-     */
-    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView
-                    .getLayoutManager());
-
-            if (dy > 0) {
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
-
-                //if the last item is visible
-                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                    //get more products only if internet connection available
-                    if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts(false);
-                }
-            }
-        }
-    };
 
     /**
      * Method inherited from AppCompatActivity.
@@ -133,11 +110,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setOnRefreshListener(this);
 
         presenter = new ProductsPresenter(this, Constants.TOKEN);
-        //start the presenter
-        presenter.start();
         //check internet connection, if there is then start fetching products
         if (Utility.isNetworkAvailable(this)) {
-            presenter.getProducts(false);
+            //start the presenter
+            presenter.start();
         } else {
             showMessageView(Constants.TYPE_CONNECTION);
         }
@@ -171,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRefresh() {
         //if internet available then fetch products resetting the adapter (from page one).
         if (Utility.isNetworkAvailable(this)) {
-            presenter.getProducts(true);
+            presenter.start();
         } else {
             showProgress(false);
             if (!productsAdapter.hasContent())
@@ -264,4 +240,28 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         llMessageView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
+
+    /**
+     * Detects when a recycler view is scrolling.
+     */
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView
+                    .getLayoutManager());
+
+            if (dy > 0) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                //if the last item is visible
+                if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                    //get more products only if internet connection available
+                    if (Utility.isNetworkAvailable(getBaseContext())) presenter.getProducts();
+                }
+            }
+        }
+    };
 }

@@ -42,13 +42,14 @@ public class ProductDetailsPresenter implements ProductDetailsInteractor.Interac
         this.interactor = new ProductDetailsInteractor();
         this.viewListener = viewListener;
         this.token = token;
+        this.interactor.setInteractorListener(this);
     }
 
     /**
      * Gets called when the view is active.
      */
     public void start() {
-        interactor.setInteractorListener(this);
+        viewListener.showProgress(false);
     }
 
     /**

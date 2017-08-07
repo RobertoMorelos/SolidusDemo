@@ -41,6 +41,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
+            android:id="@+id/scroll_main_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -64,6 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
+                        android:layout_margin="2dp"
                         android:contentDescription="@string/product_description"
                         android:scaleType="centerCrop"
                         android:src="@drawable/place_holder_default" />

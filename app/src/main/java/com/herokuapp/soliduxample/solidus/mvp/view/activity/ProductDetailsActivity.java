@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -100,7 +101,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     TextView tvMessageViewTitle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
+    @BindView(R.id.scroll_main_scroll)
+    ScrollView scrollView;
     private ProductDetailsPresenter presenter;
 
     /**
@@ -225,6 +227,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
                     @Override
                     public void onClick(View v) {
                         updatePicture(variant.getImages().get(0).getLargeUrl());
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(View.FOCUS_UP);
+                            }
+                        });
                     }
                 });
                 LinearLayout.LayoutParams layoutParams = new RadioGroup.LayoutParams(
